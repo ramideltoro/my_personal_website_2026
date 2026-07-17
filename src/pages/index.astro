@@ -1,0 +1,390 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import {
+  ArrowRight,
+  Braces,
+  CalendarClock,
+  CircleCheck,
+  Cloud,
+  Cpu,
+  Database,
+  ExternalLink,
+  GitBranch,
+  Mail,
+  Menu,
+  MessageCircle,
+  Network,
+  Send,
+  ShieldCheck,
+  X
+} from "@lucide/astro";
+import {
+  assistantAnswers,
+  focusAreas,
+  navItems,
+  principles,
+  profile,
+  projects,
+  skillGroups,
+  stats
+} from "@/data/site";
+
+const iconMap = {
+  cloud: Cloud,
+  network: Network,
+  shield: ShieldCheck
+};
+---
+
+<BaseLayout>
+  <header class="site-header" data-header>
+    <nav class="nav shell" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="Rami Del Toro home">
+        <span class="brand-mark">{profile.initials}</span>
+        <span class="brand-text">{profile.name}</span>
+      </a>
+
+      <button class="icon-button nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" data-menu-toggle>
+        <Menu data-menu-open aria-hidden="true" size={22} />
+        <X data-menu-close aria-hidden="true" size={22} />
+      </button>
+
+      <div class="nav-panel" data-nav-panel>
+        {navItems.map((item) => (
+          <a href={item.href}>{item.label}</a>
+        ))}
+        <a class="nav-cta" href="#contact">
+          <CalendarClock size={18} aria-hidden="true" />
+          Start a conversation
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="top" class="hero" aria-labelledby="hero-title">
+      <div class="hero-scene" aria-hidden="true">
+        <div class="signal-field"></div>
+        <div class="scene-frame scene-frame-one">
+          <span>api.gateway</span>
+          <strong>p95 48ms</strong>
+          <small>healthy</small>
+        </div>
+        <div class="scene-frame scene-frame-two">
+          <span>stream</span>
+          <strong>Kafka</strong>
+          <small>events flowing</small>
+        </div>
+        <div class="scene-frame scene-frame-three">
+          <span>risk</span>
+          <strong>secure</strong>
+          <small>least privilege</small>
+        </div>
+      </div>
+
+      <div class="hero-content shell">
+        <p class="eyebrow reveal">2026 portfolio · {profile.role}</p>
+        <h1 id="hero-title" class="hero-title reveal">
+          {profile.name}
+          <span>{profile.headline}</span>
+        </h1>
+        <p class="hero-copy reveal">{profile.summary}</p>
+
+        <div class="hero-actions reveal" aria-label="Hero actions">
+          <a class="button button-primary" href="#projects">
+            See selected work
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+          <a class="button button-secondary" href={profile.github} target="_blank" rel="noreferrer">
+            <GitBranch size={18} aria-hidden="true" />
+            GitHub
+          </a>
+        </div>
+
+        <div class="hero-dashboard reveal" aria-label="Portfolio highlights">
+          {stats.map((stat) => (
+            <div>
+              <span>{stat.label}</span>
+              <strong>{stat.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about-section shell" aria-labelledby="about-title">
+      <div class="section-kicker reveal">About</div>
+      <div class="split">
+        <div class="section-heading reveal">
+          <h2 id="about-title">Engineering for systems that need to stay clear under pressure.</h2>
+          <p>
+            Rami's current site emphasizes cloud readiness, API integration, secure delivery,
+            algorithms, data structures, distributed systems, resiliency, and standard engineering
+            practices. This version turns those themes into a sharper portfolio narrative.
+          </p>
+        </div>
+
+        <div class="principles reveal">
+          {principles.map((principle) => (
+            <div class="principle">
+              <CircleCheck size={18} aria-hidden="true" />
+              <span>{principle}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="focus-grid" aria-label="Engineering focus areas">
+        {focusAreas.map((area) => {
+          const Icon = iconMap[area.icon as keyof typeof iconMap];
+          return (
+            <article class="focus-card reveal">
+              <div class="focus-icon">
+                <Icon size={28} aria-hidden="true" />
+              </div>
+              <p>{area.eyebrow}</p>
+              <h3>{area.title}</h3>
+              <span>{area.body}</span>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="assistant-band" aria-labelledby="assistant-title">
+      <div class="shell assistant-layout">
+        <div class="assistant-copy reveal">
+          <p class="section-kicker">Portfolio guide</p>
+          <h2 id="assistant-title">Ask the site what matters.</h2>
+          <p>
+            Short answers from the portfolio content, tuned for recruiters, collaborators, and
+            engineering teams.
+          </p>
+        </div>
+
+        <div class="assistant-panel reveal" data-assistant>
+          <div class="assistant-header">
+            <MessageCircle size={20} aria-hidden="true" />
+            <span>Ask about Rami</span>
+          </div>
+          <div class="assistant-response" data-assistant-response>{assistantAnswers.default}</div>
+          <div class="quick-prompts" aria-label="Suggested questions">
+            <button type="button" data-question="work">Work focus</button>
+            <button type="button" data-question="projects">Projects</button>
+            <button type="button" data-question="stack">Stack</button>
+            <button type="button" data-question="contact">Contact</button>
+          </div>
+          <form class="assistant-form" data-assistant-form>
+            <label class="sr-only" for="assistant-question">Ask about Rami</label>
+            <input id="assistant-question" name="question" autocomplete="off" placeholder="Ask about projects, stack, or contact" />
+            <button class="icon-button" type="submit" aria-label="Ask">
+              <Send size={18} aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section projects-section shell" aria-labelledby="projects-title">
+      <div class="section-heading centered reveal">
+        <p class="section-kicker">Projects</p>
+        <h2 id="projects-title">Selected work, rewritten for the 2026 portfolio.</h2>
+        <p>Grounded in public links and the current website, with no invented client claims.</p>
+      </div>
+
+      <div class="project-list">
+        {projects.map((project, index) => (
+          <article class={`project project-${project.color} reveal`}>
+            <div class="project-index">0{index + 1}</div>
+            <div class="project-visual" aria-hidden="true">
+              <div class="terminal-bar">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="diagram">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+            </div>
+            <div class="project-body">
+              <p>{project.type}</p>
+              <h3>{project.name}</h3>
+              <span>{project.summary}</span>
+              <small>{project.evidence}</small>
+              <div class="tags">
+                {project.stack.map((item) => <span>{item}</span>)}
+              </div>
+              <a href={project.href} target="_blank" rel="noreferrer">
+                {project.sourceLabel}
+                <ExternalLink size={16} aria-hidden="true" />
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="stack" class="section stack-section" aria-labelledby="stack-title">
+      <div class="shell stack-shell">
+        <div class="section-heading reveal">
+          <p class="section-kicker">Tech stack</p>
+          <h2 id="stack-title">A practical stack for APIs, distributed systems, and maintainable delivery.</h2>
+        </div>
+
+        <div class="stack-stage reveal" aria-hidden="true">
+          <div class="stack-core">
+            <Cpu size={38} aria-hidden="true" />
+            <span>Systems</span>
+          </div>
+          <span class="orbit-tag orbit-one">Java</span>
+          <span class="orbit-tag orbit-two">AWS</span>
+          <span class="orbit-tag orbit-three">Kafka</span>
+          <span class="orbit-tag orbit-four">React</span>
+          <span class="orbit-tag orbit-five">Spring</span>
+          <span class="orbit-tag orbit-six">Cassandra</span>
+        </div>
+
+        <div class="skill-groups">
+          {skillGroups.map((group) => (
+            <article class="skill-group reveal">
+              <div>
+                <Database size={20} aria-hidden="true" />
+                <h3>{group.name}</h3>
+              </div>
+              <ul>
+                {group.skills.map((skill) => <li>{skill}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section shell" aria-labelledby="contact-title">
+      <div class="contact-copy reveal">
+        <p class="section-kicker">Contact</p>
+        <h2 id="contact-title">Have a systems, API, or product engineering conversation?</h2>
+        <p>
+          Send a note through the form or connect through the public profiles below.
+        </p>
+        <div class="social-links" aria-label="Social links">
+          <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub profile">
+            <GitBranch size={22} aria-hidden="true" />
+            GitHub
+          </a>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn profile">
+            <Network size={22} aria-hidden="true" />
+            LinkedIn
+          </a>
+          <a href={profile.showAlgoAuthor} target="_blank" rel="noreferrer" aria-label="ShowAlgo author page">
+            <Braces size={22} aria-hidden="true" />
+            ShowAlgo
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="hidden-field">
+          <label>Do not fill this out: <input name="bot-field" /></label>
+        </p>
+        <label>
+          Name
+          <input name="name" autocomplete="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label>
+          Message
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+        <button class="button button-primary" type="submit">
+          <Mail size={18} aria-hidden="true" />
+          Send message
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <span>{profile.initials}</span>
+      <p>© 2026 {profile.name}. Built for clarity, resilience, and fast iteration.</p>
+      <a href="#top">Back to top</a>
+    </div>
+  </footer>
+
+  <script is:inline define:vars={{ assistantAnswers }}>
+    const header = document.querySelector("[data-header]");
+    const toggle = document.querySelector("[data-menu-toggle]");
+    const panel = document.querySelector("[data-nav-panel]");
+
+    const setMenu = (open) => {
+      toggle?.setAttribute("aria-expanded", String(open));
+      panel?.toggleAttribute("data-open", open);
+      document.body.toggleAttribute("data-menu-open", open);
+    };
+
+    toggle?.addEventListener("click", () => {
+      setMenu(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    panel?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenu(false));
+    });
+
+    const onScroll = () => {
+      header?.toggleAttribute("data-scrolled", window.scrollY > 16);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.setAttribute("data-visible", "true");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.16 }
+    );
+
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+    const assistant = document.querySelector("[data-assistant]");
+    const response = assistant?.querySelector("[data-assistant-response]");
+    const form = assistant?.querySelector("[data-assistant-form]");
+    const input = form?.querySelector("input");
+
+    const answerFor = (value) => {
+      const text = value.toLowerCase();
+      if (text.includes("project") || text.includes("work") || text.includes("showalgo")) return assistantAnswers.projects;
+      if (text.includes("skill") || text.includes("stack") || text.includes("tech")) return assistantAnswers.stack;
+      if (text.includes("contact") || text.includes("email") || text.includes("linkedin")) return assistantAnswers.contact;
+      if (text.includes("cloud") || text.includes("api") || text.includes("secure") || text.includes("senior")) return assistantAnswers.work;
+      return assistantAnswers.default;
+    };
+
+    assistant?.querySelectorAll("[data-question]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const key = button.getAttribute("data-question");
+        if (response && key && assistantAnswers[key]) response.textContent = assistantAnswers[key];
+      });
+    });
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!response || !input) return;
+      response.textContent = answerFor(input.value);
+      input.value = "";
+    });
+  </script>
+</BaseLayout>

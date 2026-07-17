@@ -1,0 +1,121 @@
+name: Netlify
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: netlify-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy preview
+        id: deploy
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx --yes netlify-cli@26.2.0 deploy \
+            --dir=dist \
+            --site="$NETLIFY_SITE_ID" \
+            --auth="$NETLIFY_AUTH_TOKEN" \
+            --alias="pr-${{ github.event.pull_request.number }}" \
+            --message="Preview for PR #${{ github.event.pull_request.number }} (${GITHUB_SHA})" \
+            --json > netlify-deploy.json
+
+          node <<'NODE'
+          import fs from "node:fs";
+
+          const raw = fs.readFileSync("netlify-deploy.json", "utf8").trim();
+          const jsonStart = raw.indexOf("{");
+          const payload = JSON.parse(jsonStart >= 0 ? raw.slice(jsonStart) : raw);
+          const url = payload.deploy_url || payload.deployUrl || payload.url || payload.ssl_url;
+
+          if (!url) {
+            console.error(raw);
+            throw new Error("Netlify deploy output did not include a preview URL.");
+          }
+
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `preview_url=${url}\n`);
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Netlify Preview\n\n${url}\n`);
+          NODE
+
+      - name: Comment preview URL
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const previewUrl = '${{ steps.deploy.outputs.preview_url }}';
+            const marker = '<!-- netlify-preview-url -->';
+            const body = `${marker}\nNetlify preview: ${previewUrl}`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number,
+              per_page: 100
+            });
+            const existing = comments.find((comment) => comment.body?.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body
+              });
+            }
+
+  deploy-production:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy production
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx --yes netlify-cli@26.2.0 deploy \
+            --prod \
+            --dir=dist \
+            --site="$NETLIFY_SITE_ID" \
+            --auth="$NETLIFY_AUTH_TOKEN" \
+            --message="Production deploy for ${GITHUB_SHA}"

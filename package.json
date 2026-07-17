@@ -1,0 +1,23 @@
+{
+  "name": "rami-personal-website-2026",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/generate-og.mjs && astro check && astro build",
+    "lint": "astro check",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@lucide/astro": "^1.25.0",
+    "astro": "^7.1.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "playwright": "^1.61.1",
+    "sharp": "^0.35.3",
+    "typescript": "^6.0.3"
+  }
+}
