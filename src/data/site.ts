@@ -126,7 +126,7 @@ export const assistantAnswers = {
   stack:
     "The current public stack includes Java, React.js, AWS, Cloud Foundry, Spring Boot, Kafka, Cassandra, Maven, Mockito, JUnit 5, Resilience4j, and reactive programming.",
   contact:
-    "Use the Netlify-powered contact form on this page, or connect through GitHub and LinkedIn.",
+    "Use the contact form on this page, or connect through GitHub and LinkedIn.",
   default:
     "I can point you to Rami's projects, stack, cloud/API focus, or contact links. Try asking about projects, skills, or how to get in touch."
 };
