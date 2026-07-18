@@ -1,11 +1,8 @@
 "use client";
 
-import { FormEvent, KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import Image from "next/image";
 import { Send } from "lucide-react";
-
-type AvatarState = "idle" | "thinking" | "speaking";
 
 type ChatMessage = {
   id: string;
@@ -16,42 +13,64 @@ type ChatMessage = {
 type SuggestedPrompt = {
   label: string;
   autofill: string;
+  response: string;
+  keywords: string[];
 };
 
 const suggestedPrompts: SuggestedPrompt[] = [
-  { label: "Work", autofill: "What do you do and how can you help me?" },
-  { label: "About me", autofill: "Tell me more about yourself." },
-  { label: "Skills", autofill: "Tell me more about your skills and projects." },
-  { label: "Contact", autofill: "How can I contact you?" },
+  {
+    label: "What I Build",
+    autofill: "What kind of software do you build?",
+    keywords: ["build", "work", "software", "apps", "systems"],
+    response:
+      "I’m a senior software engineer with over a decade of experience building secure, scalable software. My work usually sits where product engineering meets platform thinking: cloud-ready applications, APIs, distributed systems, automation, and clean web experiences.\n\nI like software that is useful, observable, and simple enough for a team to operate after launch. The fun part for me is turning a rough idea into something real without losing sight of maintainability.",
+  },
+  {
+    label: "NutsNews",
+    autofill: "What is NutsNews and what did you build there?",
+    keywords: ["nutsnews", "positive news", "news", "project", "product"],
+    response:
+      "NutsNews is my current product-minded build: a calm, mobile-first positive news platform. It collects uplifting stories from trusted RSS feeds, uses AI to review and summarize them, and sends readers back to the original publishers.\n\nWhat I like about it is that it is not just a demo. It has a real web app, Cloudflare Worker ingestion, Supabase data, local AI with optional OpenAI fallback, iOS work, protected admin dashboards, caching, monitoring, backups, and documentation. It shows how I approach engineering: ship the product, understand the system, control cost, and make operations boring.",
+  },
+  {
+    label: "Tech Stack",
+    autofill: "What technologies do you work with most?",
+    keywords: ["tech", "stack", "skills", "tools", "languages"],
+    response:
+      "My strongest areas are Java, Spring, React, TypeScript, JavaScript, CSS, Python, APIs, microservices, and distributed systems. I also work across cloud and product infrastructure, including Cloudflare Workers, Supabase, GitHub-based workflows, and iOS/Swift when the product calls for it.\n\nI’m not attached to trendy tools for their own sake. I care about choosing the simplest stack that gives the product reliability, security, clear ownership, and room to grow.",
+  },
+  {
+    label: "AI",
+    autofill: "How do you use AI in your work?",
+    keywords: ["ai", "artificial intelligence", "llm", "openai", "automation", "machine learning"],
+    response:
+      "I use AI as both a product capability and a way to move faster as an engineer. In NutsNews, AI helps review, classify, and summarize positive news while keeping the original publishers central. I’ve also worked with local AI flows and optional OpenAI fallback, which has pushed me to think about cost, reliability, privacy, and graceful degradation instead of treating AI like magic.\n\nDay to day, I use AI to explore ideas, generate test cases, inspect unfamiliar code, draft documentation, and speed up debugging. I still believe the engineer owns the architecture, security, correctness, and taste. AI is powerful, but the real skill is knowing what to ask, what to verify, and when a simpler deterministic solution is better.",
+  },
+  {
+    label: "How I Work",
+    autofill: "What is it like to work with you?",
+    keywords: ["process", "collaborate", "work with you", "style", "team"],
+    response:
+      "I’m serious about fundamentals and careful about unnecessary complexity. I like to understand the problem first, clarify tradeoffs, design APIs deliberately, write testable code, and document the parts of a system that people will need later.\n\nI’m ambitious about impact, but humble in the process. I ask questions early, take feedback seriously, and expect the design to improve as the system teaches us what is true. My GitHub bio says, “Life would be much easier if I had the source code,” which is pretty close to the mood: curious, practical, and always trying to understand how things really work.",
+  },
+  {
+    label: "Writing",
+    autofill: "Do you write or teach about software?",
+    keywords: ["writing", "teach", "articles", "showalgo", "algorithms"],
+    response:
+      "Yes. I like learning in public and turning technical ideas into plain explanations. Through ShowAlgo, I’ve written about fundamentals like graphs, linked lists, MergeSort, interval merging, and array problems.\n\nThat matters to me because teaching is a good test of understanding. If I can explain a concept clearly, I can usually design with it more calmly. It also keeps the work fun: there is always another layer to learn, simplify, and share.",
+  },
+  {
+    label: "Contact",
+    autofill: "How can I contact you?",
+    keywords: ["contact", "email", "linkedin", "github", "reach"],
+    response:
+      "The best places to reach me are LinkedIn at linkedin.com/in/ramideltoro or GitHub at github.com/ramideltoro. You can also start from ramideltoro.com.\n\nI’m happy to talk about software engineering, product ideas, cloud/API architecture, positive uses of AI, or thoughtful collaboration.",
+  },
 ];
 
-const cannedResponses: Record<string, string> = {
-  "what do you do and how can you help me?":
-    "I’m here to help you turn your ideas into reality! Whether you need a website, a mobile app, or want to automate some processes, I can provide end-to-end solutions tailored to your needs. Let's chat about what you have in mind—book a free consultation in the top right corner!",
-  "tell me more about yourself.":
-    "I’m Paweł Szostak, a 21-year-old Computer Science and Intelligent Systems student at AGH University in Kraków, Poland. As a developer, I enjoy creating websites and mobile apps, and I’m passionate about automating processes to make your life easier. I love collaborating on exciting projects, so if you have an idea, let’s chat!",
-  "tell me more about your skills and projects.":
-    "I have skills in full-stack development, with experience in Flutter, Python, C++, React, and Java. Some of my key projects include:\n\n1. **Cube Solver**: An app that uses computer vision to solve a Rubik's Cube in real-time.\n2. **Guess Who**: A mobile multiplayer game adaptation of the classic board game with custom boards.\n3. **Self-Improvement Tree**: A gamified app for tracking personal development and habits.\n4. **KaucjApp**: A marketplace for deposit bottles, where I contributed as a frontend developer.\n\nI love tackling both solo and team projects, so I’m always open to new opportunities!",
-  "how can i contact you?":
-    'You can reach me by booking a free consultation through the "book a call" option in the top right corner of the website. Alternatively, feel free to email me at pszostak.contact@gmail.com. I\'m looking forward to connecting!',
-};
-
 const defaultResponse =
-  "I'm only Paweł's portfolio assistant and can help with his work, skills, projects, or contact details. Try one of the prompts below or ask about a project.";
-
-const avatarGlowVariants: Variants = {
-  idle: { opacity: 0.1, scale: 0.8 },
-  thinking: {
-    opacity: [0.15, 0.3, 0.15],
-    scale: [1, 1.05, 1],
-    transition: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
-  },
-  speaking: {
-    opacity: [0.2, 0.4, 0.2],
-    scale: [1, 1.1, 1],
-    transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" },
-  },
-};
+  "I'm Rami's portfolio assistant. I can help with what he builds, NutsNews, his tech stack, how he uses AI, how he works, his writing, or contact details.";
 
 const messageVariants: Variants = {
   hidden: { opacity: 0, y: 10, scale: 0.98 },
@@ -69,137 +88,13 @@ function normalizePrompt(prompt: string) {
 }
 
 function getResponse(prompt: string) {
-  return cannedResponses[normalizePrompt(prompt)] ?? defaultResponse;
-}
-
-function Avatar({ state, className = "" }: { state: AvatarState; className?: string }) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [introReady, setIntroReady] = useState(false);
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [isIos, setIsIos] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    window.requestAnimationFrame(() => setMounted(true));
-    const iOS =
-      /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-      (navigator.userAgent.includes("Macintosh") && navigator.maxTouchPoints > 1);
-    window.requestAnimationFrame(() => setIsIos(iOS));
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!mounted || isIos) return;
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.currentTime = 0;
-    video.play().catch(() => {});
-  }, [mounted, isIos]);
-
-  useEffect(() => {
-    if (!mounted || isIos) return;
-
-    const video = videoRef.current;
-    if (!video || !loaded || !introReady) return;
-
-    if (state === "idle" || shouldAnimate) {
-      if (state === "idle") {
-        window.requestAnimationFrame(() => setShouldAnimate(false));
-      }
-      return;
-    }
-
-    window.requestAnimationFrame(() => setShouldAnimate(true));
-    video.currentTime = 2.35;
-    video.play().catch(() => {});
-  }, [state, loaded, introReady, shouldAnimate, mounted, isIos]);
-
-  useEffect(() => {
-    if (!mounted || isIos) return;
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    const onTimeUpdate = () => {
-      const time = video.currentTime;
-
-      if (!introReady) {
-        if (time >= 2.35) {
-          video.currentTime = 2.35;
-          video.pause();
-          setIntroReady(true);
-        }
-        return;
-      }
-
-      if (time > 2.35) {
-        if (time >= 5.2) {
-          video.currentTime = 2.35;
-          video.pause();
-        }
-      } else if (state === "idle" && Math.abs(time - 2.35) > 0.05) {
-        video.currentTime = 2.35;
-        video.pause();
-      }
-    };
-
-    video.addEventListener("timeupdate", onTimeUpdate);
-    return () => video.removeEventListener("timeupdate", onTimeUpdate);
-  }, [state, introReady, mounted, isIos]);
-
-  if (!mounted) {
-    return (
-      <div className={`relative z-0 flex items-center justify-center ${className}`}>
-        <div className="relative flex h-36 w-36 items-center justify-center sm:h-52 sm:w-52" />
-      </div>
-    );
-  }
-
-  return (
-    <div className={`relative z-0 flex items-center justify-center ${className}`}>
-      <motion.div
-        className="absolute -z-10 h-32 w-32 rounded-full bg-violet-600/10 blur-[35px] sm:h-44 sm:w-44"
-        variants={avatarGlowVariants}
-        animate={state}
-      />
-      <div className="relative flex h-36 w-36 items-center justify-center sm:h-52 sm:w-52">
-        {isIos ? (
-          <Image
-            src="/hero/avatar.png"
-            alt="Avatar"
-            width={208}
-            height={208}
-            className="h-full w-full object-contain pointer-events-none"
-            priority
-          />
-        ) : (
-          <>
-            {!loaded ? <div className="absolute inset-0 bg-transparent" /> : null}
-            <video
-              ref={videoRef}
-              muted
-              playsInline
-              autoPlay
-              preload="auto"
-              controls={false}
-              onLoadedData={() => setLoaded(true)}
-              className={`h-full w-full object-contain pointer-events-none transition-opacity duration-500 ${
-                loaded ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <source src="/hero/avatar.mp4" type='video/mp4; codecs="hvc1"' />
-              <source src="/hero/avatar.webm" type="video/webm" />
-            </video>
-          </>
-        )}
-      </div>
-    </div>
+  const normalized = normalizePrompt(prompt);
+  const exactMatch = suggestedPrompts.find((suggestion) => normalizePrompt(suggestion.autofill) === normalized);
+  const keywordMatch = suggestedPrompts.find((suggestion) =>
+    suggestion.keywords.some((keyword) => normalized.includes(keyword)),
   );
+
+  return exactMatch?.response ?? keywordMatch?.response ?? defaultResponse;
 }
 
 function TypingIndicator({ text }: { text: string }) {
@@ -290,7 +185,7 @@ function ChatWindow({
       {messages.length === 0 && !isLoading ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-1 items-center justify-center">
           <p className="text-center text-xs" style={{ color: "var(--muted)", opacity: 0.5 }}>
-            Ask me anything about Paweł...
+            Ask me anything about Rami...
           </p>
         </motion.div>
       ) : null}
@@ -375,7 +270,7 @@ function ChatInput({
               textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
             }}
             rows={1}
-            placeholder="Ask anything about Paweł..."
+            placeholder="Ask anything about Rami..."
             disabled={isLoading}
             className="flex-1 resize-none overflow-hidden bg-transparent py-2 text-sm leading-tight outline-none placeholder:opacity-50"
             style={{ color: "var(--foreground)", caretColor: "var(--accent)" }}
@@ -399,14 +294,11 @@ export function Hero() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [avatarState, setAvatarState] = useState<AvatarState>("idle");
   const responseTimeoutRef = useRef<number | null>(null);
-  const speakingTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
       if (responseTimeoutRef.current) window.clearTimeout(responseTimeoutRef.current);
-      if (speakingTimeoutRef.current) window.clearTimeout(speakingTimeoutRef.current);
     };
   }, []);
 
@@ -415,7 +307,6 @@ export function Hero() {
     if (!trimmed || isLoading) return;
 
     if (responseTimeoutRef.current) window.clearTimeout(responseTimeoutRef.current);
-    if (speakingTimeoutRef.current) window.clearTimeout(speakingTimeoutRef.current);
 
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -426,7 +317,6 @@ export function Hero() {
     setMessages((current) => [...current, userMessage]);
     setInput("");
     setIsLoading(true);
-    setAvatarState("thinking");
 
     responseTimeoutRef.current = window.setTimeout(() => {
       const assistantMessage: ChatMessage = {
@@ -437,11 +327,6 @@ export function Hero() {
 
       setMessages((current) => [...current, assistantMessage]);
       setIsLoading(false);
-      setAvatarState("speaking");
-
-      speakingTimeoutRef.current = window.setTimeout(() => {
-        setAvatarState("idle");
-      }, 1200);
     }, 1450);
   };
 
@@ -467,10 +352,6 @@ export function Hero() {
         className="relative z-10 mx-auto w-full max-w-3xl"
       >
         <div className="mb-4 text-center">
-          <div className="mb-2 flex justify-center">
-            <Avatar state={avatarState} />
-          </div>
-
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -479,10 +360,10 @@ export function Hero() {
             style={{ fontSize: "200%", color: "var(--foreground)" }}
           >
             <span className="sm:hidden">
-              Hi, I&apos;m <span className="text-gradient-shimmer">Paweł Szostak</span>
+              Hi, I&apos;m <span className="text-gradient-shimmer">Rami Del Toro</span>
             </span>
             <span className="hidden sm:inline">
-              Hi, I&apos;m <span className="text-gradient-shimmer">Paweł Szostak</span>
+              Hi, I&apos;m <span className="text-gradient-shimmer">Rami Del Toro</span>
             </span>
           </motion.h1>
         </div>

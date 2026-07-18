@@ -99,3 +99,12 @@ a {
   -webkit-text-fill-color: transparent;
   animation: shimmer-gradient 3s infinite linear;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
