@@ -7,12 +7,14 @@ import {
   SiDocker,
   SiFlutter,
   SiGit,
+  SiKubernetes,
   SiNodedotjs,
   SiPython,
   SiReact,
   SiTailwindcss,
   SiTypescript,
 } from "react-icons/si";
+import { FaAws, FaJava } from "react-icons/fa";
 import type { IconType } from "react-icons";
 
 type CenterImageKey = "main" | "agh" | "work" | "location" | "gym";
@@ -45,22 +47,22 @@ const centerImages: Record<CenterImageKey, string> = {
 
 const infoCards: InfoCard[] = [
   {
-    title: "Science Club",
-    short: "Active member of GenAI Science Club. Training CV models for autonomous systems.",
-    long: "Active member of the GenAI Science Club at AGH. Currently training computer vision models for automated road obstacle detection in autonomous systems.",
-    image: "agh",
+    title: "Force for Good",
+    short: "Technical Architect helping nonprofits build practical systems.",
+    long: "I serve as a Technical Architect for nonprofit organizations, helping mission-driven teams make smart technical decisions, design reliable systems, and turn limited resources into durable software.",
+    image: "work",
   },
   {
-    title: "University",
+    title: "Inventor",
     short:
-      "Pursuing Computer Science & Intelligent Systems at AGH - recognized as the #1 major in the country for IT and AI.",
-    long: "Pursuing Computer Science & Intelligent Systems at AGH - ranked as Poland's #2 technical university. This elite program is recognized as the #1 major in the country for IT and Artificial Intelligence.",
-    image: "agh",
+      "I like building ideas end to end. A design around efficient health checking became patented.",
+    long: "I like building ideas from rough concept to working system. One design around efficient health checking became patented, which reinforced how much I enjoy practical invention at the architecture level.",
+    image: "main",
   },
   {
-    title: "Competitions",
-    short: "2nd Place Winner at Axios Hackathon. 3rd Place at Cassini Hackathon.",
-    long: "2nd Place Winner at the Axios Smart City Hackathon and 3rd Place at the Cassini Space Technologies Hackathon. Proven ability to translate high-tech engineering into scalable business models under pressure.",
+    title: "Hackathons",
+    short: "I take every opportunity to join hackathons and pressure-test ideas.",
+    long: "I take every opportunity to participate in hackathons. In 2021, I won first place for creating a customized ecosystem around Bitbucket, Jira, and Confluence.",
     image: "work",
   },
 ];
@@ -77,6 +79,9 @@ const mindsetSlides: MindsetSlide[] = [
 const stackItems: StackItem[] = [
   { label: "React", icon: SiReact, color: "#61DAFB" },
   { label: "TS", icon: SiTypescript, color: "#3178C6" },
+  { label: "Java", icon: FaJava, color: "#F89820" },
+  { label: "AWS", icon: FaAws, color: "#FF9900" },
+  { label: "Kubernetes", icon: SiKubernetes, color: "#326CE5" },
   { label: "Flutter", icon: SiFlutter, color: "#02569B" },
   { label: "Python", icon: SiPython, color: "#3776AB" },
   { label: "Node", icon: SiNodedotjs, color: "#339933" },
@@ -153,8 +158,8 @@ function NameCard({
         className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-1 text-center"
       >
         <div className="pb-2 text-3xl font-black leading-[1.1] tracking-tighter text-(--foreground) md:pb-0 md:text-4xl md:leading-[0.95]">
-          <AnimatedWord text="PAWEŁ" spacingAdjustments={{ 1: "-mr-[0.08em]", 3: "-mr-[0.04em]" }} />
-          <AnimatedWord text="SZOSTAK" spacingAdjustments={{ 1: "-mr-[0.05em]", 4: "-mr-[0.04em]" }} />
+          <AnimatedWord text="RAMI" spacingAdjustments={{ 1: "-mr-[0.03em]" }} />
+          <AnimatedWord text="DEL TORO" spacingAdjustments={{ 2: "-mr-[0.04em]", 5: "-mr-[0.03em]" }} />
         </div>
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
@@ -168,8 +173,8 @@ function NameCard({
           transition={{ delay: 0.85, duration: 0.45 }}
           className="mt-2 font-mono text-[10px] uppercase leading-[1.7] tracking-[0.2em] text-(--muted) md:mt-4 md:font-sans md:leading-normal md:tracking-[0.44em]"
         >
-          Fullstack
-          <br className="md:hidden" /> Developer
+          Software
+          <br className="md:hidden" /> Engineer
         </motion.p>
       </motion.div>
       <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
@@ -188,7 +193,7 @@ function PortraitTile({ isInView }: { isInView: boolean }) {
     >
       <Image
         src="/about/portrait.jpg"
-        alt="Paweł Portrait"
+        alt="Rami portrait"
         fill
         className="object-cover"
         sizes="50vw"
@@ -205,7 +210,7 @@ function InfoStrip({
   isInView: boolean;
   onImageChange: (image: CenterImageKey | null) => void;
 }) {
-  const [scienceClub, university, competitions] = infoCards;
+  const [forceForGood, inventor, hackathons] = infoCards;
 
   return (
     <motion.div
@@ -244,13 +249,13 @@ function InfoStrip({
           <div className="absolute left-1/4 right-1/4 top-0 h-px bg-linear-to-r from-transparent via-purple-500/50 to-transparent opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover/card:opacity-100" />
           <div className="relative z-10 mt-1">
             <span className="block text-[10px] font-bold uppercase leading-tight text-(--foreground) opacity-90">
-              {scienceClub.title}
+              {forceForGood.title}
             </span>
             <span className="mt-1.5 block hyphens-auto text-pretty text-[8px] leading-tight text-(--muted) opacity-70 sm:text-[9px] md:hidden">
-              {scienceClub.short}
+              {forceForGood.short}
             </span>
             <span className="mt-2 hidden text-[10px] leading-snug text-(--muted) opacity-50 transition-all duration-300 [mask-image:linear-gradient(to_bottom,black_0%,black_15%,transparent_70%)] group-hover/card:opacity-100 group-hover/card:[mask-image:none] md:block">
-              {scienceClub.long}
+              {forceForGood.long}
             </span>
           </div>
         </motion.div>
@@ -265,13 +270,13 @@ function InfoStrip({
           <div className="absolute left-1/4 right-1/4 top-0 h-px bg-linear-to-r from-transparent via-purple-500/50 to-transparent opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover/card:opacity-100" />
           <div className="relative z-10 mt-2 text-center">
             <span className="mb-1 block text-[12px] font-black uppercase leading-none tracking-tight text-(--foreground)">
-              {university.title}
+              {inventor.title}
             </span>
             <span className="mt-1.5 block hyphens-auto text-pretty text-[8px] leading-tight text-(--muted) opacity-70 sm:text-[9px] md:hidden">
-              {university.short}
+              {inventor.short}
             </span>
             <span className="mt-2 hidden text-[10px] leading-snug text-(--muted) opacity-50 transition-all duration-300 [mask-image:linear-gradient(to_bottom,black_0%,black_15%,transparent_80%)] group-hover/card:opacity-100 group-hover/card:[mask-image:none] md:block">
-              {university.long}
+              {inventor.long}
             </span>
           </div>
         </motion.div>
@@ -286,13 +291,13 @@ function InfoStrip({
           <div className="absolute left-1/4 right-1/4 top-0 h-px bg-linear-to-r from-transparent via-purple-500/50 to-transparent opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover/card:opacity-100" />
           <div className="relative z-10 mt-1">
             <span className="block text-[10px] font-bold uppercase leading-tight text-(--foreground) opacity-90">
-              {competitions.title}
+              {hackathons.title}
             </span>
             <span className="mt-1.5 block hyphens-auto text-pretty text-[8px] leading-tight text-(--muted) opacity-70 sm:text-[9px] md:hidden">
-              {competitions.short}
+              {hackathons.short}
             </span>
             <span className="mt-2 hidden text-[10px] leading-snug text-(--muted) opacity-50 transition-all duration-300 [mask-image:linear-gradient(to_bottom,black_0%,black_15%,transparent_70%)] group-hover/card:opacity-100 group-hover/card:[mask-image:none] md:block">
-              {competitions.long}
+              {hackathons.long}
             </span>
           </div>
         </motion.div>
@@ -305,9 +310,9 @@ function StackMarquee() {
   const items = [...stackItems, ...stackItems];
 
   return (
-    <div className="relative overflow-hidden border-y border-(--card-border)/50 bg-black/10 py-3">
+    <div className="relative overflow-hidden border-y border-(--card-border)/50 bg-black/10 py-2 md:py-3">
       <motion.div
-        className="flex w-max items-center gap-8 whitespace-nowrap px-4"
+        className="flex w-max items-center gap-6 whitespace-nowrap px-4 md:gap-8"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ repeat: Infinity, ease: "linear", duration: 22 }}
       >
@@ -343,14 +348,14 @@ function CraftCard({
       animate={isInView ? "visible" : "hidden"}
       onMouseEnter={() => onImageChange("work")}
       onMouseLeave={() => onImageChange(null)}
-      className="group col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col justify-between overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-start-2 md:h-full"
+      className="group col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-start-2 md:h-full"
     >
-      <div className="p-3 pb-0 md:p-4 md:pb-0">
-        <h3 className="text-2xl font-bold leading-[1.2] tracking-tight text-(--foreground) md:text-4xl">
+      <div className="shrink-0 p-3 pb-0 md:p-4 md:pb-0">
+        <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground) md:text-4xl md:leading-[1.2]">
           Craft
         </h3>
         <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-3" />
-        <p className="mt-2 text-base font-normal leading-[1.75] text-(--muted) md:mt-7 md:text-lg">
+        <p className="mt-2 text-sm font-normal leading-[1.45] text-(--muted) md:mt-7 md:text-lg md:leading-[1.75]">
           Building scalable{" "}
           <strong className="font-bold text-(--foreground)/70">apps, websites, and automations.</strong>
         </p>
@@ -360,16 +365,18 @@ function CraftCard({
         </p>
       </div>
 
-      <StackMarquee />
+      <div className="mt-auto shrink-0">
+        <StackMarquee />
+      </div>
 
-      <div className="space-y-3 p-3 pt-0 md:space-y-5 md:p-4 md:pt-0">
-        <p className="text-base leading-[1.75] text-(--muted) md:hidden">
-          I will find & deliver the best tech solution for your business.
+      <div className="shrink-0 space-y-2 p-3 md:space-y-5 md:p-4">
+        <p className="text-xs leading-[1.45] text-(--muted) md:hidden">
+          I find and deliver practical tech solutions.
         </p>
         <p className="hidden text-lg leading-[1.75] text-(--muted) md:block">
-          Active Hackathon competitor & Science Club member. Feel free to invite me to collaborate.
+          Hackathon builder & nonprofit Technical Architect. Feel free to invite me to collaborate.
         </p>
-        <div className="flex items-center gap-2 text-[10px] text-(--muted) md:text-[10px]">
+        <div className="flex items-center gap-2 text-[9px] leading-tight text-(--muted) md:text-[10px]">
           <span className="h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
           <span>Open to collaboration & freelance</span>
         </div>
@@ -405,17 +412,17 @@ function LocationCard({
       <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 z-20 flex flex-col justify-end p-3 md:p-4">
         <h3 className="mb-1 text-[22px] font-black uppercase leading-[0.95] tracking-tight text-white sm:text-[26px] md:text-3xl">
-          Cracow,
+          Tampa,
           <br />
-          Poland
+          Florida
         </h3>
         <p className="font-mono text-[15px] uppercase leading-none tracking-tight text-white/45 md:text-base md:tracking-wider">
-          50.0647° N,
+          27.9506° N,
           <br />
-          19.9450° E
+          82.4572° W
         </p>
         <p className="mt-0.5 font-mono text-[15px] font-bold leading-none text-purple-400 md:mt-1 md:text-sm md:leading-normal">
-          - GMT+2
+          GMT-4
         </p>
       </div>
       <div className="absolute bottom-0 right-[32%] top-0 w-px bg-purple-500/90" />
@@ -632,7 +639,7 @@ export function About() {
       ref={sectionRef}
       id="about"
       className="mx-auto max-w-5xl px-4 pb-32 pt-0"
-      style={{ scrollMarginTop: "0px" }}
+      style={{ scrollMarginTop: "120px" }}
     >
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[9rem_20.1875rem_9rem]">
         <NameCard isInView={isInView} />
