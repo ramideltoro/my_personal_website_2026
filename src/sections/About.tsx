@@ -319,7 +319,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group col-span-1 flex min-h-[24rem] w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-span-2 md:row-start-2 md:h-full md:min-h-0"
+      className="group col-span-1 hidden min-h-[24rem] w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-span-2 md:row-start-2 md:flex md:h-full md:min-h-0"
     >
       <div className="shrink-0 p-3 pb-0 md:p-4 md:pb-0">
         <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground) md:text-4xl md:leading-[1.2]">
@@ -356,6 +356,237 @@ function CraftCard({ isInView }: { isInView: boolean }) {
             handle busywork, surface context, and leave people with better decisions to make.
           </p>
         </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function MobileMindsetPanel({ isInView }: { isInView: boolean }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const intervalRef = useRef<number | null>(null);
+  const count = mindsetSlides.length;
+
+  const stop = useCallback(() => {
+    if (intervalRef.current) {
+      window.clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+
+  const start = useCallback(() => {
+    stop();
+    intervalRef.current = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % count);
+    }, 4000);
+  }, [count, stop]);
+
+  useEffect(() => {
+    if (isInView) {
+      start();
+    }
+
+    return stop;
+  }, [isInView, start, stop]);
+
+  const getIndex = (offset: number) => (activeIndex + offset + count) % count;
+  const setSlide = (index: number) => {
+    setActiveIndex(index);
+    start();
+  };
+
+  return (
+    <div className="flex h-full min-w-full snap-center flex-col">
+      <div className="z-20 shrink-0 p-4 pb-2">
+        <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground)">
+          About Me
+        </h3>
+        <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80" />
+        <p className="mt-4 hyphens-auto text-pretty text-sm leading-[1.55] text-(--muted)">
+          I&apos;m a software engineer who likes turning complex ideas into products people can
+          actually use.
+        </p>
+      </div>
+
+      <div className="relative flex flex-1 items-center justify-center overflow-hidden px-2 py-1">
+        <div className="relative flex h-full w-full items-center justify-center" style={{ perspective: "1000px" }}>
+          <motion.button
+            type="button"
+            className="absolute aspect-3/4 w-[45%] cursor-pointer overflow-hidden rounded-xl border border-(--card-border)/50 shadow-lg"
+            initial={false}
+            animate={{ x: "-55%", scale: 0.7, rotateY: 25, opacity: 0.5, zIndex: 1, filter: "blur(1px) grayscale(30%)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            onClick={() => setSlide(getIndex(-1))}
+            aria-label={`Show ${mindsetSlides[getIndex(-1)].label}`}
+          >
+            <Image
+              src={mindsetSlides[getIndex(-1)].src}
+              alt={mindsetSlides[getIndex(-1)].label}
+              fill
+              className="object-cover"
+              style={{ objectPosition: mindsetSlides[getIndex(-1)].objectPosition }}
+              sizes="40vw"
+            />
+          </motion.button>
+
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={`mobile-center-${activeIndex}`}
+              className="relative aspect-3/4 w-[55%] cursor-pointer overflow-hidden rounded-xl border-2 border-purple-500/30 shadow-2xl"
+              initial={{ scale: 0.85, opacity: 0.5, rotateY: -15 }}
+              animate={{ x: 0, scale: 1, rotateY: 0, opacity: 1, zIndex: 10, filter: "blur(0px) grayscale(0%)" }}
+              exit={{ scale: 0.85, opacity: 0.5, rotateY: 15 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <Image
+                src={mindsetSlides[activeIndex].src}
+                alt={mindsetSlides[activeIndex].label}
+                fill
+                className="object-cover"
+                style={{ objectPosition: mindsetSlides[activeIndex].objectPosition }}
+                sizes="50vw"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 via-black/30 to-transparent p-2 pt-8">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-white">
+                  {mindsetSlides[activeIndex].label}
+                </span>
+              </div>
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-tr from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </motion.div>
+          </AnimatePresence>
+
+          <motion.button
+            type="button"
+            className="absolute aspect-3/4 w-[45%] cursor-pointer overflow-hidden rounded-xl border border-(--card-border)/50 shadow-lg"
+            initial={false}
+            animate={{ x: "55%", scale: 0.7, rotateY: -25, opacity: 0.5, zIndex: 1, filter: "blur(1px) grayscale(30%)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            onClick={() => setSlide(getIndex(1))}
+            aria-label={`Show ${mindsetSlides[getIndex(1)].label}`}
+          >
+            <Image
+              src={mindsetSlides[getIndex(1)].src}
+              alt={mindsetSlides[getIndex(1)].label}
+              fill
+              className="object-cover"
+              style={{ objectPosition: mindsetSlides[getIndex(1)].objectPosition }}
+              sizes="40vw"
+            />
+          </motion.button>
+        </div>
+      </div>
+
+      <div className="z-20 shrink-0 border-t border-(--card-border)/30 p-4 pt-3">
+        <p className="text-pretty text-sm leading-[1.55] text-(--muted)">
+          Most days I&apos;m somewhere between code, flight lessons, long drives, and experiments
+          with AI.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function MobileInMotionPanel() {
+  return (
+    <div className="flex h-full min-w-full snap-center flex-col">
+      <div className="shrink-0 p-4 pb-0">
+        <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground)">
+          In Motion
+        </h3>
+        <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80" />
+      </div>
+
+      <div className="flex flex-1 flex-col justify-center gap-8 p-4 pt-5">
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75">
+            Flight
+          </h4>
+          <p className="mt-2 text-sm leading-[1.55] text-(--muted)">
+            Flying keeps me sharp: prepare well, stay calm, and adjust when the situation changes.
+            I like the mix of discipline, freedom, and responsibility.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75">
+            Roads
+          </h4>
+          <p className="mt-2 text-sm leading-[1.55] text-(--muted)">
+            Long drives help me reset and think. Some of my best technical decisions start as quiet
+            time on the road with a problem in the background.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75">
+            AI Agents
+          </h4>
+          <p className="mt-2 text-sm leading-[1.55] text-(--muted)">
+            I like building AI agents because they make software feel like a teammate. The best ones
+            handle busywork, surface context, and leave people with better decisions to make.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MobileAboutMotionCarousel({ isInView }: { isInView: boolean }) {
+  const [activePanel, setActivePanel] = useState(0);
+  const mobileCarouselRef = useRef<HTMLDivElement | null>(null);
+  const panels = ["About Me", "In Motion"];
+
+  const scrollToPanel = (index: number) => {
+    const scroller = mobileCarouselRef.current;
+    if (!scroller) {
+      return;
+    }
+
+    scroller.scrollTo({
+      left: index * scroller.clientWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const onPanelScroll = () => {
+    const scroller = mobileCarouselRef.current;
+    if (!scroller) {
+      return;
+    }
+
+    const nextIndex = Math.round(scroller.scrollLeft / scroller.clientWidth);
+    setActivePanel(Math.min(Math.max(nextIndex, 0), panels.length - 1));
+  };
+
+  return (
+    <motion.div
+      custom={4}
+      variants={cardVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      className="col-span-1 md:hidden"
+    >
+      <div
+        ref={mobileCarouselRef}
+        onScroll={onPanelScroll}
+        className="scrollbar-hide flex h-[38rem] snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm sm:h-[40rem]"
+        aria-label="About and In Motion"
+      >
+        <MobileMindsetPanel isInView={isInView} />
+        <MobileInMotionPanel />
+      </div>
+
+      <div className="mt-3 flex justify-center gap-2">
+        {panels.map((panel, index) => (
+          <button
+            key={panel}
+            type="button"
+            onClick={() => scrollToPanel(index)}
+            className="h-2 rounded-full transition-all duration-300"
+            style={{
+              width: activePanel === index ? "1.5rem" : "0.5rem",
+              backgroundColor: activePanel === index ? "var(--accent)" : "var(--card-border)",
+            }}
+            aria-label={`Show ${panel}`}
+          />
+        ))}
       </div>
     </motion.div>
   );
@@ -443,7 +674,7 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group relative col-span-1 flex h-[30rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[32rem] md:col-start-1 md:row-span-2 md:row-start-2 md:h-full"
+      className="group relative col-span-1 hidden h-[36rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[38rem] md:col-start-1 md:row-span-2 md:row-start-2 md:flex md:h-full"
     >
       <div className="z-20 shrink-0 p-3 pb-2 md:p-4 md:pb-0">
         <div>
@@ -526,8 +757,8 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
         </div>
       </div>
 
-      <div className="z-20 hidden shrink-0 border-t border-(--card-border)/30 p-3 pt-0 md:block md:p-3.5">
-        <p className="text-pretty text-base leading-[1.6] text-(--muted)">
+      <div className="z-20 shrink-0 border-t border-(--card-border)/30 p-3 pt-3 md:block md:p-3.5 md:pt-0">
+        <p className="text-pretty text-sm leading-[1.55] text-(--muted) md:text-base md:leading-[1.6]">
           Most days I&apos;m somewhere between code, flight lessons, long drives, and experiments
           with AI.
         </p>
@@ -585,6 +816,7 @@ export function About() {
         <NameCard isInView={isInView} desktop />
         <PortraitTile isInView={isInView} />
         <InfoStrip isInView={isInView} />
+        <MobileAboutMotionCarousel isInView={isInView} />
         <CraftCard isInView={isInView} />
         <LocationCard isInView={isInView} />
         <MindsetCard isInView={isInView} />

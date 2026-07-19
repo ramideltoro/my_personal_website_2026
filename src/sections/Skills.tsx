@@ -92,6 +92,16 @@ function lerp(start: number, end: number, amount: number) {
   return start + (end - start) * amount;
 }
 
+function listenToMediaQuery(media: MediaQueryList, listener: () => void) {
+  if (typeof media.addEventListener === "function") {
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }
+
+  media.addListener(listener);
+  return () => media.removeListener(listener);
+}
+
 function deterministicSpread(index: number, axis: number) {
   const value = Math.sin((index + 1) * (axis * 35.713 + 91.33)) * 10000;
   return value - Math.floor(value);
@@ -274,6 +284,8 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
   const lastScrollY = useRef(0);
   const dragging = useRef({ active: false, x: 0, y: 0 });
   const reduceMotion = useRef(false);
+  const isMobileGlobeRef = useRef(false);
+  const [isMobileGlobe, setIsMobileGlobe] = useState(false);
   const [isAssembled, setIsAssembled] = useState(false);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const hoveredSkillRef = useRef<string | null>(null);
@@ -291,11 +303,18 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
     };
 
     syncPreference();
-    media.addEventListener("change", syncPreference);
+    return listenToMediaQuery(media, syncPreference);
+  }, []);
 
-    return () => {
-      media.removeEventListener("change", syncPreference);
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const syncViewport = () => {
+      isMobileGlobeRef.current = media.matches;
+      setIsMobileGlobe(media.matches);
     };
+
+    syncViewport();
+    return listenToMediaQuery(media, syncViewport);
   }, []);
 
   useEffect(() => {
@@ -320,6 +339,13 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
 
     const updateScrollVelocity = () => {
       const nextScrollY = window.scrollY;
+
+      if (isMobileGlobeRef.current) {
+        scrollVelocity.current = 0;
+        lastScrollY.current = nextScrollY;
+        return;
+      }
+
       const delta = nextScrollY - lastScrollY.current;
       scrollVelocity.current = Math.abs(delta) > 120 ? 0 : delta * 0.001;
       lastScrollY.current = nextScrollY;
@@ -334,17 +360,29 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
 
   useEffect(() => {
     let frame = 0;
+    let lastRenderTime: number | null = null;
 
-    const tick = () => {
+    const tick = (timestamp: number) => {
       const canvas = canvasRef.current;
       const root = rootRef.current;
+      const mobileMode = isMobileGlobeRef.current;
+
+      if (mobileMode && lastRenderTime !== null && timestamp - lastRenderTime < 1000 / 30) {
+        frame = window.requestAnimationFrame(tick);
+        return;
+      }
+
+      const elapsed = lastRenderTime === null ? 1000 / 60 : Math.min(timestamp - lastRenderTime, 100);
+      const frameScale = mobileMode ? elapsed / (1000 / 60) : 1;
+      const positionLerpFactor = mobileMode ? 1 - Math.pow(1 - LERP_FACTOR, frameScale) : LERP_FACTOR;
+      lastRenderTime = timestamp;
 
       if (canvas && root) {
         const { width, height } = root.getBoundingClientRect();
 
         if (width > 0 && height > 0) {
           if (isAssembledRef.current && !reduceMotion.current && !dragging.current.active) {
-            rotation.current.y += 0.0005 + scrollVelocity.current;
+            rotation.current.y += (0.0005 + scrollVelocity.current) * frameScale;
             scrollVelocity.current *= 0.95;
           }
 
@@ -352,9 +390,9 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
             const current = currentPositions.current[index];
             const target = isAssembledRef.current || reduceMotion.current ? point.target : point.start;
 
-            current.x = reduceMotion.current ? target.x : lerp(current.x, target.x, LERP_FACTOR);
-            current.y = reduceMotion.current ? target.y : lerp(current.y, target.y, LERP_FACTOR);
-            current.z = reduceMotion.current ? target.z : lerp(current.z, target.z, LERP_FACTOR);
+            current.x = reduceMotion.current ? target.x : lerp(current.x, target.x, positionLerpFactor);
+            current.y = reduceMotion.current ? target.y : lerp(current.y, target.y, positionLerpFactor);
+            current.z = reduceMotion.current ? target.z : lerp(current.z, target.z, positionLerpFactor);
 
             const projected = getProjectedPoint(current, width, height, rotation.current.x, rotation.current.y);
             const cameraAlignment = clamp(projected.z / SPHERE_RADIUS, -1, 1);
@@ -395,6 +433,10 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
   }, [points]);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isMobileGlobeRef.current && event.pointerType === "touch") {
+      return;
+    }
+
     dragging.current = {
       active: true,
       x: event.clientX,
@@ -404,6 +446,10 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
   };
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isMobileGlobeRef.current && event.pointerType === "touch") {
+      return;
+    }
+
     if (!dragging.current.active) {
       return;
     }
@@ -418,6 +464,10 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
   };
 
   const stopDragging = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging.current.active) {
+      return;
+    }
+
     dragging.current.active = false;
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -430,7 +480,7 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
       ref={rootRef}
       role="img"
       aria-label={`Animated sphere of technology skills: ${skillNames}`}
-      className="relative z-0 h-[37.5rem] w-full touch-none select-none sm:h-[37.5rem] md:h-[50rem]"
+      className="relative z-0 h-[37.5rem] w-full touch-pan-y select-none sm:h-[37.5rem] md:h-[50rem] md:touch-none"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={stopDragging}
@@ -446,11 +496,13 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
         return (
           <div
             key={skill.name}
-            className="absolute left-0 top-0 flex cursor-pointer flex-col items-center justify-center transition-transform duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)]"
+            className="absolute left-0 top-0 flex cursor-pointer flex-col items-center justify-center will-change-transform md:transition-transform md:duration-300 md:ease-[cubic-bezier(0.175,0.885,0.32,1.275)]"
             style={{
               opacity: skill.opacity,
               pointerEvents: skill.pointerEvents,
-              transform: `translate3d(${skill.x}px, ${skill.y}px, 0) translate(-50%, -50%) scale(${skill.scale})`,
+              transform: isMobileGlobe
+                ? `translate(${skill.x}px, ${skill.y}px) translate(-50%, -50%) scale(${skill.scale})`
+                : `translate3d(${skill.x}px, ${skill.y}px, 0) translate(-50%, -50%) scale(${skill.scale})`,
               zIndex: skill.zIndex,
             }}
             onMouseEnter={() => setHoveredSkill(skill.name)}
@@ -464,10 +516,12 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
                   color: isHovered ? "#ffffff" : color,
                   filter: isHovered
                     ? `drop-shadow(0 0 20px ${color})`
+                    : isMobileGlobe
+                      ? `grayscale(${skill.grayscale * 80}%) brightness(${0.62 + (1 - skill.grayscale) * 0.38})`
                     : `grayscale(${skill.grayscale * 100}%) brightness(${0.5 + (1 - skill.grayscale) * 0.5}) blur(${
                         skill.grayscale * 0.5
                       }px)`,
-                  transition: "filter 0.3s ease, color 0.3s ease",
+                  transition: isMobileGlobe ? "color 0.2s ease" : "filter 0.3s ease, color 0.3s ease",
                 }}
               />
             </div>
@@ -478,7 +532,9 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
                 background: isHovered ? `${color}90` : "transparent",
                 opacity: skill.showText ? 1 : 0,
                 transform: isHovered ? "translateY(4px) scale(1.05)" : "translateY(0) scale(1)",
-                transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                transition: isMobileGlobe
+                  ? "opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease"
+                  : "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
               }}
             >
               {skill.name}
