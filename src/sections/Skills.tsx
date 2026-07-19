@@ -522,7 +522,7 @@ export function Skills() {
             transition={{ delay: 0.1 }}
             className="px-2 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl"
           >
-            My <span className="text-gradient-shimmer">Skills</span>
+            <span className="text-gradient-shimmer">Skills</span>
           </motion.h2>
         </motion.div>
 
