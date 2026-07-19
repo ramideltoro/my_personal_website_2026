@@ -24,16 +24,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       className="group flex h-full flex-col"
     >
       <header className="mb-4 shrink-0">
-        <div className="mb-2 flex items-center gap-3">
-          <span className="text-xs font-mono uppercase tracking-wider text-(--muted)">
-            0{index + 1}
-          </span>
-          <span className="h-px w-6 bg-(--card-border)" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-(--muted)">
-            {isMobile ? "Mobile App" : "Desktop App"}
-          </span>
-        </div>
-
         <div className="flex flex-col gap-2 min-[380px]:flex-row min-[380px]:items-center min-[380px]:justify-between">
           <h3 className="line-clamp-2 flex-1 text-base font-bold leading-tight text-(--foreground) sm:text-lg md:text-2xl">
             {project.title}

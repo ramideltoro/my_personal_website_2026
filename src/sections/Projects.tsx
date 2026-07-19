@@ -14,16 +14,10 @@ export function Projects() {
     >
       <div className="section">
         <div className="mb-20 text-center">
-          <span className="text-base font-bold uppercase tracking-widest text-(--accent)">
-            Selected work
-          </span>
-          <h2 className="mt-4 px-2 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl">
+          <h2 className="px-2 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl">
             Featured{" "}
             <span className="text-gradient-shimmer">Projects</span>
           </h2>
-          <p className="mx-auto mt-8 max-w-3xl px-2 text-base font-light leading-relaxed text-(--muted) sm:text-xl">
-            Card layout copied from the original portfolio style with mobile/desktop mockups.
-          </p>
         </div>
 
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
