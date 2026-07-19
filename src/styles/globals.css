@@ -92,11 +92,16 @@ a {
 
 .portfolio-sections {
   --portfolio-section-gap: 6rem;
+  --hero-about-gap: 3rem;
   padding-bottom: calc(var(--portfolio-section-gap) + 3.5rem);
 }
 
 .portfolio-sections > section + section {
   margin-top: var(--portfolio-section-gap);
+}
+
+.portfolio-sections > #about {
+  margin-top: var(--hero-about-gap);
 }
 
 @media (min-width: 640px) {
@@ -107,6 +112,7 @@ a {
 
   .portfolio-sections {
     --portfolio-section-gap: 7rem;
+    --hero-about-gap: 3.5rem;
   }
 }
 
@@ -118,6 +124,7 @@ a {
 
   .portfolio-sections {
     --portfolio-section-gap: 9rem;
+    --hero-about-gap: 4.5rem;
   }
 }
 
