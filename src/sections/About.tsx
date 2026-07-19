@@ -38,7 +38,7 @@ type StackItem = {
 };
 
 const centerImages: Record<CenterImageKey, string> = {
-  main: "/about/portrait.jpg",
+  main: "/about/rami-profile.jpeg",
   agh: "/about/agh.jpg",
   work: "/about/team.jpg",
   location: "/about/city.jpg",
@@ -192,7 +192,7 @@ function PortraitTile({ isInView }: { isInView: boolean }) {
       className="relative col-span-1 row-span-1 aspect-square w-full overflow-hidden rounded-2xl border border-(--card-border) md:hidden"
     >
       <Image
-        src="/about/portrait.jpg"
+        src="/about/rami-profile.jpeg"
         alt="Rami portrait"
         fill
         className="object-cover"
