@@ -1,4 +1,3 @@
-import { Heart } from "lucide-react";
 import { siteConfig, socials } from "@/data/config";
 
 export function Footer() {
@@ -10,18 +9,12 @@ export function Footer() {
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <div className="flex items-center gap-3 text-base text-(--muted)">
             <span className="text-lg font-bold text-(--foreground)">
-              <span className="gradient-text">PS</span>
+              <span className="gradient-text">RDT</span>
             </span>
             <span>•</span>
             <span>
               © {year} {siteConfig.name}
             </span>
-          </div>
-
-          <div className="flex items-center gap-2 text-base font-medium text-(--muted)">
-            Built with
-            <Heart size={16} className="fill-red-500 text-red-500" />
-            Next.js & Tailwind
           </div>
 
           <div className="flex items-center gap-5">

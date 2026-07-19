@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
+import { Github, Instagram, Linkedin, type LucideIcon } from "lucide-react";
 
 export interface Social {
   name: string;
@@ -9,23 +9,23 @@ export interface Social {
 export const socials: Social[] = [
   {
     name: "GitHub",
-    url: "https://github.com/Szostak21",
+    url: "https://github.com/ramideltoro",
     icon: Github,
   },
   {
     name: "LinkedIn",
-    url: "https://www.linkedin.com/in/pawe%C5%82-szostak-0867703a8/",
+    url: "https://www.linkedin.com/in/ramideltoro/",
     icon: Linkedin,
   },
   {
-    name: "Email",
-    url: "mailto:pszostak.contact@gmail.com",
-    icon: Mail,
+    name: "Instagram",
+    url: "https://www.instagram.com/rami_deltoro/",
+    icon: Instagram,
   },
 ];
 
 export const siteConfig = {
-  name: "Paweł Szostak",
+  name: "Rami Del Toro",
   title: "Full Stack Developer",
   description: "I build useful products with modern web stack",
 };
