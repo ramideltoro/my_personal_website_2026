@@ -23,54 +23,54 @@ const suggestedPrompts: SuggestedPrompt[] = [
     autofill: "What kind of software do you build?",
     keywords: ["build", "work", "software", "apps", "systems"],
     response:
-      "I’m a senior software engineer with over a decade of experience building secure, scalable software. My work usually sits where product engineering meets platform thinking: cloud-ready applications, APIs, distributed systems, automation, and clean web experiences.\n\nI like software that is useful, observable, and simple enough for a team to operate after launch. The fun part for me is turning a rough idea into something real without losing sight of maintainability.",
+      "I’m a software engineer with over a decade of experience building secure, scalable software. Most of my work sits where product ideas meet real systems: APIs, cloud-ready apps, distributed services, automation, and clean web experiences.\n\nI like building software that is useful, easy to reason about, and still maintainable after the first launch. The fun part for me is taking a rough idea and turning it into something real without making the system harder than it needs to be.",
   },
   {
     label: "NutsNews",
     autofill: "What is NutsNews and what did you build there?",
     keywords: ["nutsnews", "positive news", "news", "project", "product"],
     response:
-      "NutsNews is my current product-minded build: a calm, mobile-first positive news platform. It collects uplifting stories from trusted RSS feeds, uses AI to review and summarize them, and sends readers back to the original publishers.\n\nWhat I like about it is that it is not just a demo. It has a real web app, Cloudflare Worker ingestion, Supabase data, local AI with optional OpenAI fallback, iOS work, protected admin dashboards, caching, monitoring, backups, and documentation. It shows how I approach engineering: ship the product, understand the system, control cost, and make operations boring.",
+      "NutsNews is my positive news platform. It is built around a simple idea: staying informed should not always leave you drained. It gathers uplifting stories from trusted RSS feeds, uses AI to help review and summarize them, and points readers back to the original publishers.\n\nThe part I’m proud of is the full system behind it: web app, Cloudflare Worker ingestion, Supabase, local AI with OpenAI fallback, iOS work, admin tools, caching, monitoring, backups, and docs. It is the kind of project where product taste and engineering discipline both matter.",
   },
   {
     label: "Tech Stack",
     autofill: "What technologies do you work with most?",
     keywords: ["tech", "stack", "skills", "tools", "languages"],
     response:
-      "My strongest areas are Java, Spring, React, TypeScript, JavaScript, CSS, Python, APIs, microservices, and distributed systems. I also work across cloud and product infrastructure, including Cloudflare Workers, Supabase, GitHub-based workflows, and iOS/Swift when the product calls for it.\n\nI’m not attached to trendy tools for their own sake. I care about choosing the simplest stack that gives the product reliability, security, clear ownership, and room to grow.",
+      "I spend most of my time with Java, Spring, React, TypeScript, JavaScript, CSS, Python, APIs, microservices, and distributed systems. I also work with cloud and product infrastructure like Cloudflare Workers, Supabase, GitHub workflows, and iOS/Swift when the product needs it.\n\nI try not to chase tools just because they are loud that month. I care about picking the stack that gives the team reliability, security, clear ownership, and enough room to grow.",
   },
   {
     label: "AI",
     autofill: "How do you use AI in your work?",
     keywords: ["ai", "artificial intelligence", "llm", "openai", "automation", "machine learning"],
     response:
-      "I use AI as both a product capability and a way to move faster as an engineer. In NutsNews, AI helps review, classify, and summarize positive news while keeping the original publishers central. I’ve also worked with local AI flows and optional OpenAI fallback, which has pushed me to think about cost, reliability, privacy, and graceful degradation instead of treating AI like magic.\n\nDay to day, I use AI to explore ideas, generate test cases, inspect unfamiliar code, draft documentation, and speed up debugging. I still believe the engineer owns the architecture, security, correctness, and taste. AI is powerful, but the real skill is knowing what to ask, what to verify, and when a simpler deterministic solution is better.",
+      "I use AI in two ways: inside products and in my own engineering workflow. In NutsNews, AI helps review, classify, and summarize positive news while keeping the original publishers central. I’ve also worked with local AI flows and OpenAI fallback, which forces practical questions about cost, privacy, reliability, and graceful failure.\n\nDay to day, I use AI to explore ideas, write tests, inspect unfamiliar code, draft documentation, and speed up debugging. I still own the architecture, security, correctness, and taste. AI helps me move faster, but judgment is still the job.",
   },
   {
     label: "How I Work",
     autofill: "What is it like to work with you?",
     keywords: ["process", "collaborate", "work with you", "style", "team"],
     response:
-      "I’m serious about fundamentals and careful about unnecessary complexity. I like to understand the problem first, clarify tradeoffs, design APIs deliberately, write testable code, and document the parts of a system that people will need later.\n\nI’m ambitious about impact, but humble in the process. I ask questions early, take feedback seriously, and expect the design to improve as the system teaches us what is true. My GitHub bio says, “Life would be much easier if I had the source code,” which is pretty close to the mood: curious, practical, and always trying to understand how things really work.",
+      "I care about fundamentals, clear tradeoffs, and keeping complexity honest. I like to understand the problem first, design APIs with care, write testable code, and document the parts people will need later.\n\nI’m ambitious about impact and humble about the process. I ask questions early, take feedback seriously, and expect the design to improve as the system gets more real. My GitHub bio says, “Life would be much easier if I had the source code,” and that still feels accurate: curious, practical, and always trying to understand how things really work.",
   },
   {
     label: "Writing",
     autofill: "Do you write or teach about software?",
     keywords: ["writing", "teach", "articles", "showalgo", "algorithms"],
     response:
-      "Yes. I like learning in public and turning technical ideas into plain explanations. Through ShowAlgo, I’ve written about fundamentals like graphs, linked lists, MergeSort, interval merging, and array problems.\n\nThat matters to me because teaching is a good test of understanding. If I can explain a concept clearly, I can usually design with it more calmly. It also keeps the work fun: there is always another layer to learn, simplify, and share.",
+      "Yes. I like learning in public and explaining technical ideas without making them sound mysterious. Through ShowAlgo, I’ve written about graphs, linked lists, MergeSort, interval merging, and array problems.\n\nTeaching is a good test of understanding. If I can explain a concept clearly, I can usually build with it more calmly. It also keeps software fun because there is always another layer to learn, simplify, and share.",
   },
   {
     label: "Contact",
     autofill: "How can I contact you?",
     keywords: ["contact", "email", "linkedin", "github", "reach"],
     response:
-      "The best places to reach me are LinkedIn at linkedin.com/in/ramideltoro or GitHub at github.com/ramideltoro. You can also start from ramideltoro.com.\n\nI’m happy to talk about software engineering, product ideas, cloud/API architecture, positive uses of AI, or thoughtful collaboration.",
+      "The best places to reach me are LinkedIn at linkedin.com/in/ramideltoro and GitHub at github.com/ramideltoro. You can also start from ramideltoro.com.\n\nI’m always open to thoughtful conversations about software engineering, product ideas, cloud/API architecture, AI, or work that helps people.",
   },
 ];
 
 const defaultResponse =
-  "I'm Rami's portfolio assistant. I can help with what he builds, NutsNews, his tech stack, how he uses AI, how he works, his writing, or contact details.";
+  "I can help with what Rami builds, NutsNews, his tech stack, AI work, how he works, writing, or contact details.";
 
 const messageVariants: Variants = {
   hidden: { opacity: 0, y: 10, scale: 0.98 },
@@ -179,7 +179,7 @@ function ChatWindow({
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}
-        {isLoading ? <TypingIndicator key="typing" text="AI is thinking..." /> : null}
+        {isLoading ? <TypingIndicator key="typing" text="Thinking..." /> : null}
       </AnimatePresence>
 
       {messages.length === 0 && !isLoading ? (

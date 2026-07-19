@@ -4,7 +4,14 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/5 bg-black/20 px-4 py-10 backdrop-blur-sm sm:px-0 sm:py-12">
+    <footer
+      id="footer"
+      className="border-t px-4 py-10 backdrop-blur-sm sm:px-0 sm:py-12"
+      style={{
+        borderColor: "var(--card-border)",
+        backgroundColor: "color-mix(in oklab, var(--background) 90%, transparent)",
+      }}
+    >
       <div className="section">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <div className="flex items-center gap-3 text-base text-(--muted)">

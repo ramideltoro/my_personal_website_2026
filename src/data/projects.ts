@@ -15,8 +15,8 @@ export const projects: Project[] = [
   {
     id: "project-alpha",
     title: "NutsNews",
-    description: "A full positive news platform.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
+    description: "A positive news platform built to make staying informed feel lighter.",
+    tags: ["Next.js", "AI", "News"],
     featured: true,
     deviceType: "desktop",
     bgColor: "bg-linear-to-br from-violet-500/90 to-fuchsia-500/90",
@@ -27,8 +27,8 @@ export const projects: Project[] = [
   {
     id: "project-beta",
     title: "NutsNews iOS app",
-    description: "A personalized native iOS news reader summarizing articles into bite-sized insights.",
-    tags: ["iOS", "AI", "News"],
+    description: "A native iOS news reader that turns long articles into quick, useful summaries.",
+    tags: ["iOS", "Swift", "AI"],
     featured: true,
     deviceType: "mobile",
     bgColor: "bg-linear-to-br from-blue-500/90 to-cyan-500/90",
@@ -41,9 +41,8 @@ export const projects: Project[] = [
   {
     id: "project-gamma",
     title: "ShowAlgo",
-    description: "An educational programming blog covering algorithms, data structures, and coding problems.",
-    tags: ["Python", "APIs", "Automation"],
-    github: "https://github.com/Szostak21/Nebula",
+    description: "A programming blog where I break down algorithms, data structures, and coding problems.",
+    tags: ["Algorithms", "Writing", "Education"],
     featured: true,
     deviceType: "desktop",
     bgColor: "bg-linear-to-br from-emerald-500/90 to-teal-500/90",
@@ -54,7 +53,7 @@ export const projects: Project[] = [
   {
     id: "project-delta",
     title: "Force For Good",
-    description: "Technical architect for The ALS Association's volunteer platform strategy, design, and implementation.",
+    description: "Technical architect work for The ALS Association's volunteer platform strategy, design, and implementation.",
     tags: ["Architecture", "Nonprofit", "Platform"],
     featured: true,
     deviceType: "desktop",

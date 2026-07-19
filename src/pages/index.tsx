@@ -16,7 +16,7 @@ export default function HomePage() {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Simple portfolio template based on the original project."
+          content="Personal portfolio for Rami Del Toro, a software engineer building useful web, mobile, cloud, and AI-powered products."
         />
       </Head>
 

@@ -21,21 +21,21 @@ const linkItems: LinkItem[] = [
   },
   {
     title: "ShowAlgo",
-    description: "Educational programming blog for algorithms, data structures, and coding problems.",
+    description: "Notes and examples for algorithms, data structures, and coding practice.",
     href: "https://www.showalgo.com",
     icon: Code2,
     color: "from-blue-500 to-cyan-500",
   },
   {
     title: "NutsNews iOS app",
-    description: "Native iOS news reader that turns articles into bite-sized insights.",
+    description: "Native iOS reader for quick, useful news summaries.",
     href: "https://apps.apple.com/us/app/nutsnews/id6782165732",
     icon: Smartphone,
     color: "from-indigo-500 to-purple-500",
   },
   {
     title: "The ALS Association Florida Chapter Project",
-    description: "Video overview of nonprofit platform work with The ALS Association Florida Chapter.",
+    description: "Volunteer platform work with The ALS Association Florida Chapter.",
     href: "https://www.youtube.com/watch?v=y0phC3DjIJw",
     icon: Youtube,
     color: "from-rose-500 to-red-500",
@@ -61,7 +61,7 @@ export function Other() {
             <span className="text-gradient-shimmer">Links</span>
           </h2>
           <p className="mx-auto max-w-2xl px-3 text-base text-(--muted) sm:text-lg">
-            A few places to see what I am building across the web and iOS.
+            A few places to see what I&apos;m building, writing, and sharing.
           </p>
         </motion.div>
 

@@ -26,6 +26,6 @@ export const socials: Social[] = [
 
 export const siteConfig = {
   name: "Rami Del Toro",
-  title: "Full Stack Developer",
-  description: "I build useful products with modern web stack",
+  title: "Software Engineer",
+  description: "I build useful products across web, mobile, cloud, and AI.",
 };

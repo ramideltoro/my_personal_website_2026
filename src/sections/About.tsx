@@ -19,19 +19,18 @@ type MindsetSlide = {
 const infoCards: InfoCard[] = [
   {
     title: "Force for Good",
-    short: "Served as a Technical Architect helping nonprofits build practical systems.",
-    long: "I served as a Technical Architect for nonprofit organizations, helping mission-driven teams make smart technical decisions, design reliable systems, and turn limited resources into durable software.",
+    short: "Technical architecture work for nonprofit teams trying to do more with less.",
+    long: "I served as a Technical Architect for nonprofit organizations, helping mission-driven teams turn messy needs into practical systems their volunteers and staff could actually use.",
   },
   {
     title: "Inventor",
-    short:
-      "I like building ideas end to end. A design around efficient health checking became patented.",
-    long: "I like building ideas from rough concept to working system. One design around efficient health checking became patented, which reinforced how much I enjoy practical invention at the architecture level.",
+    short: "I like taking rough ideas seriously enough to build them.",
+    long: "I enjoy the path from rough idea to working system. One design around efficient health checking became patented, which still reminds me that practical ideas can become real IP when the details are good.",
   },
   {
     title: "Hackathons",
-    short: "I take every opportunity to join hackathons and pressure-test ideas.",
-    long: "I take every opportunity to participate in hackathons. In 2021, I won first place for creating a customized ecosystem around Bitbucket, Jira, and Confluence.",
+    short: "I use hackathons to test ideas, move fast, and learn with a team.",
+    long: "I take every chance I can to jump into hackathons. In 2021, my team won first place for a custom ecosystem around Bitbucket, Jira, and Confluence.",
   },
 ];
 
@@ -272,8 +271,8 @@ function CraftCard({ isInView }: { isInView: boolean }) {
             Flight
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-            Preparation, precision, and calm decision-making when the situation changes. Flying
-            keeps me disciplined about planning ahead while staying flexible in the moment.
+            Flying keeps me sharp: prepare well, stay calm, and adjust when the situation changes.
+            I like the mix of discipline, freedom, and responsibility.
           </p>
         </div>
         <div>
@@ -281,8 +280,8 @@ function CraftCard({ isInView }: { isInView: boolean }) {
             Roads
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-            Long drives help me reset, reflect, and find momentum. Time on the road gives me space
-            to think through architecture, priorities, and the next idea worth building.
+            Long drives help me reset and think. Some of my best technical decisions start as quiet
+            time on the road with a problem in the background.
           </p>
         </div>
         <div>
@@ -290,8 +289,8 @@ function CraftCard({ isInView }: { isInView: boolean }) {
             AI Agents
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-            I like building tools that turn busy work into leverage. AI agents are where I explore
-            faster feedback loops, smarter workflows, and practical automation that helps people move.
+            I like building AI agents because they make software feel like a teammate. The best ones
+            handle busywork, surface context, and leave people with better decisions to make.
           </p>
         </div>
       </div>
@@ -391,8 +390,8 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
           <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-3" />
         </div>
         <p className="mt-4 hyphens-auto text-pretty text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-          <strong>A software engineer</strong> turning complex ideas into simple, useful,
-          innovative products.
+          I&apos;m a software engineer who likes turning complex ideas into products people can
+          actually use.
         </p>
       </div>
 
@@ -466,7 +465,8 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
 
       <div className="z-20 hidden shrink-0 border-t border-(--card-border)/30 p-3 pt-0 md:block md:p-3.5">
         <p className="text-pretty text-base leading-[1.6] text-(--muted)">
-          Often exploring flight, long drives, and new scalable ways to build with AI.
+          Most days I&apos;m somewhere between code, flight lessons, long drives, and experiments
+          with AI.
         </p>
       </div>
     </motion.div>
