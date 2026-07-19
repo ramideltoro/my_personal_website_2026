@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView, type Variants } from "framer-motion";
+import { AnimatePresence, motion, useInView, type PanInfo, type Variants } from "framer-motion";
 import Image from "next/image";
 
 type InfoCard = {
@@ -43,7 +43,25 @@ const mindsetSlides: MindsetSlide[] = [
   { label: "Flying", src: "/about/flying.jpg" },
 ];
 
-const MINDSET_SLIDE_INTERVAL_MS = 30000;
+const MINDSET_SLIDE_INTERVAL_MS = 15000;
+const MINDSET_INITIAL_SLIDE_INDEX = Math.max(
+  mindsetSlides.findIndex((slide) => slide.label === "AI Agents"),
+  0,
+);
+const MINDSET_SWIPE_DISTANCE = 40;
+const MINDSET_SWIPE_VELOCITY = 350;
+
+function getMindsetSwipeOffset(info: PanInfo) {
+  if (info.offset.x <= -MINDSET_SWIPE_DISTANCE || info.velocity.x <= -MINDSET_SWIPE_VELOCITY) {
+    return 1;
+  }
+
+  if (info.offset.x >= MINDSET_SWIPE_DISTANCE || info.velocity.x >= MINDSET_SWIPE_VELOCITY) {
+    return -1;
+  }
+
+  return 0;
+}
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95, y: 15 },
@@ -332,7 +350,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
 
       <div className="flex flex-1 flex-col justify-center gap-5 p-3 pt-4 md:gap-8 md:p-4">
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground) md:text-xs">
             Flight
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
@@ -341,7 +359,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
           </p>
         </div>
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground) md:text-xs">
             Roads
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
@@ -350,7 +368,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
           </p>
         </div>
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground) md:text-xs">
             AI Agents
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
@@ -364,7 +382,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
 }
 
 function MobileMindsetPanel({ isInView }: { isInView: boolean }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(MINDSET_INITIAL_SLIDE_INDEX);
   const intervalRef = useRef<number | null>(null);
   const count = mindsetSlides.length;
 
@@ -391,10 +409,20 @@ function MobileMindsetPanel({ isInView }: { isInView: boolean }) {
   }, [isInView, start, stop]);
 
   const getIndex = (offset: number) => (activeIndex + offset + count) % count;
-  const setSlide = (index: number) => {
+  const setSlide = useCallback((index: number) => {
     setActiveIndex(index);
     start();
-  };
+  }, [start]);
+  const shiftSlide = useCallback((offset: number) => {
+    setActiveIndex((current) => (current + offset + count) % count);
+    start();
+  }, [count, start]);
+  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const offset = getMindsetSwipeOffset(info);
+    if (offset !== 0) {
+      shiftSlide(offset);
+    }
+  }, [shiftSlide]);
 
   return (
     <div className="flex h-full min-w-full snap-center flex-col">
@@ -433,11 +461,15 @@ function MobileMindsetPanel({ isInView }: { isInView: boolean }) {
           <AnimatePresence mode="popLayout">
             <motion.div
               key={`mobile-center-${activeIndex}`}
-              className="relative aspect-3/4 w-[55%] cursor-pointer overflow-hidden rounded-xl border-2 border-purple-500/30 shadow-2xl"
+              className="relative aspect-3/4 w-[55%] cursor-grab touch-pan-y overflow-hidden rounded-xl border-2 border-purple-500/30 shadow-2xl active:cursor-grabbing"
               initial={{ scale: 0.85, opacity: 0.5, rotateY: -15 }}
               animate={{ x: 0, scale: 1, rotateY: 0, opacity: 1, zIndex: 10, filter: "blur(0px) grayscale(0%)" }}
               exit={{ scale: 0.85, opacity: 0.5, rotateY: 15 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.16}
+              onDragEnd={handleDragEnd}
             >
               <Image
                 src={mindsetSlides[activeIndex].src}
@@ -499,7 +531,7 @@ function MobileInMotionPanel() {
 
       <div className="flex flex-1 flex-col justify-center gap-8 p-4 pt-5">
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)">
             Flight
           </h4>
           <p className="mt-2 text-sm leading-[1.55] text-(--muted)">
@@ -508,7 +540,7 @@ function MobileInMotionPanel() {
           </p>
         </div>
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)">
             Roads
           </h4>
           <p className="mt-2 text-sm leading-[1.55] text-(--muted)">
@@ -517,7 +549,7 @@ function MobileInMotionPanel() {
           </p>
         </div>
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75">
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)">
             AI Agents
           </h4>
           <p className="mt-2 text-sm leading-[1.55] text-(--muted)">
@@ -638,7 +670,7 @@ function LocationCard({ isInView }: { isInView: boolean }) {
 }
 
 function MindsetCard({ isInView }: { isInView: boolean }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(MINDSET_INITIAL_SLIDE_INDEX);
   const intervalRef = useRef<number | null>(null);
   const count = mindsetSlides.length;
 
@@ -665,10 +697,20 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
   }, [isInView, start, stop]);
 
   const getIndex = (offset: number) => (activeIndex + offset + count) % count;
-  const setSlide = (index: number) => {
+  const setSlide = useCallback((index: number) => {
     setActiveIndex(index);
     start();
-  };
+  }, [start]);
+  const shiftSlide = useCallback((offset: number) => {
+    setActiveIndex((current) => (current + offset + count) % count);
+    start();
+  }, [count, start]);
+  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const offset = getMindsetSwipeOffset(info);
+    if (offset !== 0) {
+      shiftSlide(offset);
+    }
+  }, [shiftSlide]);
 
   return (
     <motion.div
@@ -715,11 +757,15 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
           <AnimatePresence mode="popLayout">
             <motion.div
               key={`center-${activeIndex}`}
-              className="relative aspect-3/4 w-[55%] cursor-pointer overflow-hidden rounded-xl border-2 border-purple-500/30 shadow-2xl md:w-[50%] md:rounded-2xl"
+              className="relative aspect-3/4 w-[55%] cursor-grab touch-pan-y overflow-hidden rounded-xl border-2 border-purple-500/30 shadow-2xl active:cursor-grabbing md:w-[50%] md:rounded-2xl"
               initial={{ scale: 0.85, opacity: 0.5, rotateY: -15 }}
               animate={{ x: 0, scale: 1, rotateY: 0, opacity: 1, zIndex: 10, filter: "blur(0px) grayscale(0%)" }}
               exit={{ scale: 0.85, opacity: 0.5, rotateY: 15 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.16}
+              onDragEnd={handleDragEnd}
             >
               <Image
                 src={mindsetSlides[activeIndex].src}
