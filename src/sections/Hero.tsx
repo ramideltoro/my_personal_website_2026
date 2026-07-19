@@ -260,6 +260,8 @@ function ChatInput({
           }}
         >
           <textarea
+            id="hero-chat-input"
+            name="message"
             ref={textareaRef}
             value={input}
             onChange={(event) => setInput(event.target.value)}
@@ -271,6 +273,7 @@ function ChatInput({
             }}
             rows={1}
             placeholder="Ask anything about Rami..."
+            aria-label="Ask anything about Rami"
             disabled={isLoading}
             className="flex-1 resize-none overflow-hidden bg-transparent py-2 text-sm leading-tight outline-none placeholder:opacity-50"
             style={{ color: "var(--foreground)", caretColor: "var(--accent)" }}
