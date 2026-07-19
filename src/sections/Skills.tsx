@@ -560,8 +560,8 @@ export function Skills() {
     <section
       ref={sectionRef}
       id="skills"
-      className="relative overflow-hidden pt-0 pb-32"
-      style={{ scrollMarginTop: "100px" }}
+      className="relative overflow-hidden"
+      style={{ scrollMarginTop: "120px" }}
     >
       <div className="section">
         <motion.div

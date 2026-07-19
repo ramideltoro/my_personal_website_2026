@@ -21,13 +21,15 @@ export default function HomePage() {
       </Head>
 
       <Background />
-      <main className="relative z-10 pb-20">
+      <main className="relative z-10">
         <Navbar />
-        <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Other />
+        <div className="portfolio-sections">
+          <Hero />
+          <About />
+          <Projects />
+          <Skills />
+          <Other />
+        </div>
       </main>
       <div className="relative z-10">
         <Footer />

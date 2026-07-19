@@ -796,7 +796,7 @@ export function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="mx-auto max-w-6xl px-3 pb-28 pt-0 md:px-4 md:pb-36"
+      className="mx-auto max-w-6xl px-3 md:px-4"
       style={{ scrollMarginTop: "120px" }}
     >
       <motion.div

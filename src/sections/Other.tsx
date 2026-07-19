@@ -46,7 +46,7 @@ export function Other() {
   return (
     <section
       id="links"
-      className="relative overflow-hidden pt-0 pb-24 sm:pb-32"
+      className="relative overflow-hidden"
       style={{ scrollMarginTop: "120px" }}
     >
       <div className="section">

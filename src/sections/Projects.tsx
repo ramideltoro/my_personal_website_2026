@@ -7,7 +7,7 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative overflow-hidden pt-0 pb-32"
+      className="relative overflow-hidden"
       style={{ scrollMarginTop: "120px" }}
     >
       <div className="section">

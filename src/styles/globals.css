@@ -90,10 +90,23 @@ a {
   padding-right: 0.75rem;
 }
 
+.portfolio-sections {
+  --portfolio-section-gap: 6rem;
+  padding-bottom: var(--portfolio-section-gap);
+}
+
+.portfolio-sections > section + section {
+  margin-top: var(--portfolio-section-gap);
+}
+
 @media (min-width: 640px) {
   .section {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .portfolio-sections {
+    --portfolio-section-gap: 7rem;
   }
 }
 
@@ -101,6 +114,10 @@ a {
   .section {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+
+  .portfolio-sections {
+    --portfolio-section-gap: 9rem;
   }
 }
 
