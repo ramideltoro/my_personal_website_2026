@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title>Portfolio Template</title>
+        <title>Welcome | Rami Del Toro Personal Website</title>
         <meta
           name="description"
           content="Simple portfolio template based on the original project."

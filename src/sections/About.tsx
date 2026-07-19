@@ -292,29 +292,35 @@ function CraftCard({
     >
       <div className="shrink-0 p-3 pb-0 md:p-4 md:pb-0">
         <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground) md:text-4xl md:leading-[1.2]">
-          Craft
+          In Motion
         </h3>
         <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-3" />
-        <p className="mt-2 text-sm font-normal leading-[1.45] text-(--muted) md:mt-7 md:text-lg md:leading-[1.75]">
-          Building scalable{" "}
-          <strong className="font-bold text-(--foreground)/70">apps, websites, and automations.</strong>
-        </p>
-        <p className="mt-5 hidden text-lg leading-[1.75] text-(--muted) md:block">
-          I understand what advantages modern tech can provide, helping me advise on the solutions a
-          business actually needs.
-        </p>
       </div>
 
-      <div className="mt-auto shrink-0 space-y-2 p-3 md:space-y-5 md:p-4">
-        <p className="text-xs leading-[1.45] text-(--muted) md:hidden">
-          I find and deliver practical tech solutions.
-        </p>
-        <p className="hidden text-lg leading-[1.75] text-(--muted) md:block">
-          Hackathon builder & nonprofit Technical Architect. Feel free to invite me to collaborate.
-        </p>
-        <div className="flex items-center gap-2 text-[9px] leading-tight text-(--muted) md:text-[10px]">
-          <span className="h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
-          <span>Open to collaboration & freelance</span>
+      <div className="flex flex-1 flex-col justify-center gap-3 p-3 pt-4 md:gap-5 md:p-4">
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
+            Flight
+          </h4>
+          <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
+            Preparation, precision, and calm decision-making when the situation changes.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
+            Roads
+          </h4>
+          <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
+            Long drives help me reset, reflect, and find momentum.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
+            AI Agents
+          </h4>
+          <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
+            I like building tools that turn busy work into leverage.
+          </p>
         </div>
       </div>
     </motion.div>
@@ -427,8 +433,8 @@ function MindsetCard({
         </h3>
         <div className="mt-3 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-1" />
         <p className="mt-6 text-base leading-[1.75] text-(--muted) md:mt-2 md:text-lg">
-          I’m a builder who loves motion, from flying planes and driving roads to exploring AI
-          agents.
+          A software engineer who loves turning complex ideas into simple, useful, innovative
+          products.
         </p>
       </div>
 
@@ -501,7 +507,7 @@ function MindsetCard({
 
       <div className="z-20 hidden shrink-0 border-t border-(--card-border)/30 p-3 pt-0 md:block md:p-3.5">
         <p className="text-lg leading-[1.75] text-(--muted)">
-          I bring that same curiosity, precision, and momentum into the software I create.
+          Often exploring flight, long drives, and new scalable ways to build with AI.
         </p>
       </div>
     </motion.div>
