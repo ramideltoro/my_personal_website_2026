@@ -55,6 +55,7 @@ type ProjectedSkill = Skill & {
 const SPHERE_RADIUS = 3;
 const CAMERA_DISTANCE = 14;
 const LERP_FACTOR = 0.07;
+const FRAME_INTERVAL = 1000 / 30;
 
 const skills: Skill[] = [
   { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
@@ -285,7 +286,6 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
   const dragging = useRef({ active: false, x: 0, y: 0 });
   const reduceMotion = useRef(false);
   const isMobileGlobeRef = useRef(false);
-  const [isMobileGlobe, setIsMobileGlobe] = useState(false);
   const [isAssembled, setIsAssembled] = useState(false);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const hoveredSkillRef = useRef<string | null>(null);
@@ -310,7 +310,6 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
     const media = window.matchMedia("(max-width: 767px)");
     const syncViewport = () => {
       isMobileGlobeRef.current = media.matches;
-      setIsMobileGlobe(media.matches);
     };
 
     syncViewport();
@@ -365,16 +364,15 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
     const tick = (timestamp: number) => {
       const canvas = canvasRef.current;
       const root = rootRef.current;
-      const mobileMode = isMobileGlobeRef.current;
 
-      if (mobileMode && lastRenderTime !== null && timestamp - lastRenderTime < 1000 / 30) {
+      if (lastRenderTime !== null && timestamp - lastRenderTime < FRAME_INTERVAL) {
         frame = window.requestAnimationFrame(tick);
         return;
       }
 
       const elapsed = lastRenderTime === null ? 1000 / 60 : Math.min(timestamp - lastRenderTime, 100);
-      const frameScale = mobileMode ? elapsed / (1000 / 60) : 1;
-      const positionLerpFactor = mobileMode ? 1 - Math.pow(1 - LERP_FACTOR, frameScale) : LERP_FACTOR;
+      const frameScale = elapsed / (1000 / 60);
+      const positionLerpFactor = 1 - Math.pow(1 - LERP_FACTOR, frameScale);
       lastRenderTime = timestamp;
 
       if (canvas && root) {
@@ -496,13 +494,11 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
         return (
           <div
             key={skill.name}
-            className="absolute left-0 top-0 flex cursor-pointer flex-col items-center justify-center will-change-transform md:transition-transform md:duration-300 md:ease-[cubic-bezier(0.175,0.885,0.32,1.275)]"
+            className="absolute left-0 top-0 flex cursor-pointer flex-col items-center justify-center will-change-transform"
             style={{
               opacity: skill.opacity,
               pointerEvents: skill.pointerEvents,
-              transform: isMobileGlobe
-                ? `translate(${skill.x}px, ${skill.y}px) translate(-50%, -50%) scale(${skill.scale})`
-                : `translate3d(${skill.x}px, ${skill.y}px, 0) translate(-50%, -50%) scale(${skill.scale})`,
+              transform: `translate(${skill.x}px, ${skill.y}px) translate(-50%, -50%) scale(${skill.scale})`,
               zIndex: skill.zIndex,
             }}
             onMouseEnter={() => setHoveredSkill(skill.name)}
@@ -516,12 +512,8 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
                   color: isHovered ? "#ffffff" : color,
                   filter: isHovered
                     ? `drop-shadow(0 0 20px ${color})`
-                    : isMobileGlobe
-                      ? `grayscale(${skill.grayscale * 80}%) brightness(${0.62 + (1 - skill.grayscale) * 0.38})`
-                    : `grayscale(${skill.grayscale * 100}%) brightness(${0.5 + (1 - skill.grayscale) * 0.5}) blur(${
-                        skill.grayscale * 0.5
-                      }px)`,
-                  transition: isMobileGlobe ? "color 0.2s ease" : "filter 0.3s ease, color 0.3s ease",
+                    : `grayscale(${skill.grayscale * 80}%) brightness(${0.62 + (1 - skill.grayscale) * 0.38})`,
+                  transition: "color 0.2s ease",
                 }}
               />
             </div>
@@ -532,9 +524,7 @@ function SkillsGlobe({ isInView }: { isInView: boolean }) {
                 background: isHovered ? `${color}90` : "transparent",
                 opacity: skill.showText ? 1 : 0,
                 transform: isHovered ? "translateY(4px) scale(1.05)" : "translateY(0) scale(1)",
-                transition: isMobileGlobe
-                  ? "opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease"
-                  : "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                transition: "opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease",
               }}
             >
               {skill.name}
