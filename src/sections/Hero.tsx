@@ -344,7 +344,7 @@ export function Hero() {
     <section
       id="home"
       className="relative flex min-h-screen items-center justify-center px-4"
-      style={{ scrollMarginTop: "120px", paddingTop: "6rem", paddingBottom: "8rem" }}
+      style={{ scrollMarginTop: "120px", paddingTop: "6rem", paddingBottom: "3rem" }}
     >
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-violet-950/20 via-transparent to-transparent" />
 

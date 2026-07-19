@@ -92,7 +92,7 @@ a {
 
 .portfolio-sections {
   --portfolio-section-gap: 6rem;
-  --hero-about-gap: 3rem;
+  --hero-about-gap: 1.5rem;
   padding-bottom: calc(var(--portfolio-section-gap) + 3.5rem);
 }
 
@@ -112,7 +112,7 @@ a {
 
   .portfolio-sections {
     --portfolio-section-gap: 7rem;
-    --hero-about-gap: 3.5rem;
+    --hero-about-gap: 2rem;
   }
 }
 
@@ -124,7 +124,7 @@ a {
 
   .portfolio-sections {
     --portfolio-section-gap: 9rem;
-    --hero-about-gap: 4.5rem;
+    --hero-about-gap: 2.5rem;
   }
 }
 
