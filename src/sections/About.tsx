@@ -100,7 +100,7 @@ function NameCard({
       className={[
         desktop
           ? "hidden md:flex md:col-start-1 md:row-start-1 md:h-full"
-          : "md:hidden col-span-1 row-span-1 aspect-square",
+          : "md:hidden min-h-[13rem] sm:min-h-[15rem]",
         "relative w-full overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-6 backdrop-blur-md",
       ].join(" ")}
     >
@@ -142,14 +142,14 @@ function PortraitTile({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="relative col-span-1 row-span-1 aspect-square w-full overflow-hidden rounded-2xl border border-(--card-border) md:hidden"
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-(--card-border) sm:aspect-[16/10] md:hidden"
     >
       <Image
         src="/about/rami-profile.jpeg"
         alt="Rami portrait"
         fill
         className="object-cover"
-        sizes="50vw"
+        sizes="(max-width: 768px) calc(100vw - 1.5rem), 33vw"
         priority
       />
     </motion.div>
@@ -158,6 +158,30 @@ function PortraitTile({ isInView }: { isInView: boolean }) {
 
 function InfoStrip({ isInView }: { isInView: boolean }) {
   const [forceForGood, inventor, hackathons] = infoCards;
+  const [activeMobileCard, setActiveMobileCard] = useState(0);
+  const mobileScrollerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToMobileCard = (index: number) => {
+    const scroller = mobileScrollerRef.current;
+    if (!scroller) {
+      return;
+    }
+
+    scroller.scrollTo({
+      left: index * scroller.clientWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const onMobileScroll = () => {
+    const scroller = mobileScrollerRef.current;
+    if (!scroller) {
+      return;
+    }
+
+    const nextIndex = Math.round(scroller.scrollLeft / scroller.clientWidth);
+    setActiveMobileCard(Math.min(Math.max(nextIndex, 0), infoCards.length - 1));
+  };
 
   return (
     <motion.div
@@ -165,7 +189,7 @@ function InfoStrip({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group relative col-span-2 row-span-1 h-32 w-full overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-md [--y-mid:70px] [--y-side:60px] md:col-start-2 md:col-span-2 md:row-start-1 md:h-full md:[--y-mid:100px] md:[--y-side:100px]"
+      className="group relative col-span-1 h-auto w-full overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-md [--y-mid:70px] [--y-side:60px] md:col-start-2 md:col-span-2 md:row-start-1 md:h-full md:[--y-mid:100px] md:[--y-side:100px]"
     >
       <div className="pointer-events-none absolute left-0 right-0 top-4 z-30 hidden justify-center transition-opacity delay-100 duration-300 group-hover:opacity-0 md:flex">
         <span className="rounded-full border border-purple-500/10 bg-(--card)/50 px-3 py-1 text-[8px] font-medium uppercase tracking-[0.2em] text-purple-400/50 backdrop-blur-sm">
@@ -181,7 +205,46 @@ function InfoStrip({ isInView }: { isInView: boolean }) {
           }}
         />
       </div>
-      <div className="relative z-10 flex h-full w-full items-end justify-center overflow-hidden rounded-2xl px-2">
+      <div className="relative z-10 p-3 md:hidden">
+        <div
+          ref={mobileScrollerRef}
+          onScroll={onMobileScroll}
+          className="scrollbar-hide flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-xl border border-(--foreground)/10 bg-(--card) shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+          aria-label="About highlights"
+        >
+          {infoCards.map((card) => (
+            <article
+              key={card.title}
+              className="flex min-h-[15.5rem] min-w-full snap-center flex-col justify-center p-5"
+              aria-label={card.title}
+            >
+              <h3 className="text-base font-black uppercase leading-tight tracking-tight text-(--foreground)">
+                {card.title}
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-(--muted)">
+                {card.long}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-3 flex justify-center gap-2">
+          {infoCards.map((card, index) => (
+            <button
+              key={card.title}
+              type="button"
+              onClick={() => scrollToMobileCard(index)}
+              className="h-2 rounded-full transition-all duration-300"
+              style={{
+                width: activeMobileCard === index ? "1.5rem" : "0.5rem",
+                backgroundColor: activeMobileCard === index ? "var(--accent)" : "var(--card-border)",
+              }}
+              aria-label={`Show ${card.title}`}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="relative z-10 hidden h-full w-full items-end justify-center overflow-hidden rounded-2xl px-2 md:flex">
         <motion.div
           initial={{ y: 120 }}
           animate={{ y: "var(--y-side)" }}
@@ -256,7 +319,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group col-span-1 row-span-2 flex h-[36rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[32rem] md:col-start-3 md:row-start-2 md:h-full"
+      className="group col-span-1 flex min-h-[24rem] w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-span-2 md:row-start-2 md:h-full md:min-h-0"
     >
       <div className="shrink-0 p-3 pb-0 md:p-4 md:pb-0">
         <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground) md:text-4xl md:leading-[1.2]">
@@ -305,7 +368,7 @@ function LocationCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="relative col-span-1 row-span-1 aspect-square overflow-hidden rounded-2xl border border-(--card-border) bg-(--card) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-2 md:row-start-3 md:aspect-auto md:h-full"
+      className="relative col-span-1 aspect-[4/3] overflow-hidden rounded-2xl border border-(--card-border) bg-(--card) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-2 md:row-start-3 md:aspect-auto md:h-full"
     >
       <div className="absolute inset-0 z-0">
         <Image
@@ -313,7 +376,7 @@ function LocationCard({ isInView }: { isInView: boolean }) {
           alt="Map Background"
           fill
           className="scale-125 translate-y-4 object-cover opacity-50 grayscale mix-blend-luminosity"
-          sizes="(max-width: 768px) 50vw, 33vw"
+          sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="absolute inset-0 bg-linear-to-t from-(--card) via-(--card)/70 to-transparent" />
       </div>
@@ -380,7 +443,7 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group relative col-span-1 row-span-2 flex h-[30rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[32rem] md:col-start-1 md:row-start-2 md:h-full"
+      className="group relative col-span-1 flex h-[30rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[32rem] md:col-start-1 md:row-span-2 md:row-start-2 md:h-full"
     >
       <div className="z-20 shrink-0 p-3 pb-2 md:p-4 md:pb-0">
         <div>
@@ -517,7 +580,7 @@ export function About() {
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[9rem_auto_9rem]">
+      <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3 md:grid-rows-[9rem_auto_9rem] md:gap-3">
         <NameCard isInView={isInView} />
         <NameCard isInView={isInView} desktop />
         <PortraitTile isInView={isInView} />
