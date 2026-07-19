@@ -26,17 +26,16 @@ export const projects: Project[] = [
   },
   {
     id: "project-beta",
-    title: "Project Beta",
-    description: "Mobile-first product with polished UX and strong architecture.",
-    tags: ["React Native", "Expo", "Node.js"],
-    github: "https://github.com/Szostak21/Guess-who",
+    title: "NutsNews iOS app",
+    description: "A personalized native iOS news reader summarizing articles into bite-sized insights.",
+    tags: ["iOS", "AI", "News"],
     featured: true,
     deviceType: "mobile",
     bgColor: "bg-linear-to-br from-blue-500/90 to-cyan-500/90",
     screenshots: [
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=900&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=900&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=900&auto=format&fit=crop",
+      "/projects/nutsnews-ios-main.png",
+      "/projects/nutsnews-ios-right.png",
+      "/projects/nutsnews-ios-left.png",
     ],
   },
   {

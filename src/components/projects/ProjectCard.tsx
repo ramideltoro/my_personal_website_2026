@@ -77,6 +77,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   {screenshots[1] ? (
                     <div className="absolute -bottom-16 left-0 z-10 w-[38%] origin-bottom md:-bottom-24 md:left-4">
                       <div className="relative aspect-9/19 overflow-hidden rounded-t-2xl border-x-2 border-t-2 border-neutral-800 bg-black shadow-2xl md:rounded-t-3xl md:border-x-4 md:border-t-4">
+                        <div className="absolute top-0 left-1/2 z-30 h-2 w-[35%] -translate-x-1/2 rounded-b-md bg-black md:h-3 md:rounded-b-lg" />
                         <Image
                           src={screenshots[1]}
                           alt="Screen 2"
@@ -91,6 +92,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   {screenshots[2] ? (
                     <div className="absolute -bottom-16 right-0 z-10 w-[38%] origin-bottom md:-bottom-24 md:right-4">
                       <div className="relative aspect-9/19 overflow-hidden rounded-t-2xl border-x-2 border-t-2 border-neutral-800 bg-black shadow-2xl md:rounded-t-3xl md:border-x-4 md:border-t-4">
+                        <div className="absolute top-0 left-1/2 z-30 h-2 w-[35%] -translate-x-1/2 rounded-b-md bg-black md:h-3 md:rounded-b-lg" />
                         <Image
                           src={screenshots[2]}
                           alt="Screen 3"
