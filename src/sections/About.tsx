@@ -43,6 +43,8 @@ const mindsetSlides: MindsetSlide[] = [
   { label: "Flying", src: "/about/flying.jpg" },
 ];
 
+const MINDSET_SLIDE_INTERVAL_MS = 30000;
+
 const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95, y: 15 },
   visible: (index: number) => ({
@@ -377,7 +379,7 @@ function MobileMindsetPanel({ isInView }: { isInView: boolean }) {
     stop();
     intervalRef.current = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % count);
-    }, 4000);
+    }, MINDSET_SLIDE_INTERVAL_MS);
   }, [count, stop]);
 
   useEffect(() => {
@@ -651,7 +653,7 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
     stop();
     intervalRef.current = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % count);
-    }, 4000);
+    }, MINDSET_SLIDE_INTERVAL_MS);
   }, [count, stop]);
 
   useEffect(() => {
