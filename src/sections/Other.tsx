@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, ExternalLink, Newspaper, Smartphone, type LucideIcon } from "lucide-react";
+import { Code2, ExternalLink, Newspaper, Smartphone, Youtube, type LucideIcon } from "lucide-react";
 
 type LinkItem = {
   title: string;
@@ -32,6 +32,13 @@ const linkItems: LinkItem[] = [
     href: "https://apps.apple.com/us/app/nutsnews/id6782165732",
     icon: Smartphone,
     color: "from-indigo-500 to-purple-500",
+  },
+  {
+    title: "The ALS Association Florida Chapter Project",
+    description: "Video overview of nonprofit platform work with The ALS Association Florida Chapter.",
+    href: "https://www.youtube.com/watch?v=y0phC3DjIJw",
+    icon: Youtube,
+    color: "from-rose-500 to-red-500",
   },
 ];
 

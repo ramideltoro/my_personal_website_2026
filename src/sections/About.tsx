@@ -257,7 +257,7 @@ function CraftCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-start-2 md:h-full"
+      className="group col-span-1 row-span-2 flex h-[36rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[32rem] md:col-start-3 md:row-start-2 md:h-full"
     >
       <div className="shrink-0 p-3 pb-0 md:p-4 md:pb-0">
         <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground) md:text-4xl md:leading-[1.2]">
@@ -266,13 +266,14 @@ function CraftCard({ isInView }: { isInView: boolean }) {
         <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-3" />
       </div>
 
-      <div className="flex flex-1 flex-col justify-center gap-3 p-3 pt-4 md:gap-5 md:p-4">
+      <div className="flex flex-1 flex-col justify-center gap-5 p-3 pt-4 md:gap-8 md:p-4">
         <div>
           <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-(--foreground)/75 md:text-xs">
             Flight
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-            Preparation, precision, and calm decision-making when the situation changes.
+            Preparation, precision, and calm decision-making when the situation changes. Flying
+            keeps me disciplined about planning ahead while staying flexible in the moment.
           </p>
         </div>
         <div>
@@ -280,7 +281,8 @@ function CraftCard({ isInView }: { isInView: boolean }) {
             Roads
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-            Long drives help me reset, reflect, and find momentum.
+            Long drives help me reset, reflect, and find momentum. Time on the road gives me space
+            to think through architecture, priorities, and the next idea worth building.
           </p>
         </div>
         <div>
@@ -288,7 +290,8 @@ function CraftCard({ isInView }: { isInView: boolean }) {
             AI Agents
           </h4>
           <p className="mt-1 text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
-            I like building tools that turn busy work into leverage.
+            I like building tools that turn busy work into leverage. AI agents are where I explore
+            faster feedback loops, smarter workflows, and practical automation that helps people move.
           </p>
         </div>
       </div>
@@ -378,20 +381,22 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="group relative col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-1 md:row-start-2 md:h-full"
+      className="group relative col-span-1 row-span-2 flex h-[30rem] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 sm:h-[32rem] md:col-start-1 md:row-start-2 md:h-full"
     >
-      <div className="z-20 shrink-0 p-3 pb-2 md:p-3.5 md:pb-0">
-        <h3 className="text-2xl font-bold leading-[1.2] tracking-tight text-(--foreground) md:text-4xl">
-          About Me
-        </h3>
-        <div className="mt-3 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-1" />
-        <p className="mt-6 text-base leading-[1.75] text-(--muted) md:mt-2 md:text-lg">
-          A software engineer who loves turning complex ideas into simple, useful, innovative
-          products.
+      <div className="z-20 shrink-0 p-3 pb-2 md:p-4 md:pb-0">
+        <div>
+          <h3 className="text-[22px] font-bold leading-[1.15] tracking-tight text-(--foreground) md:text-4xl md:leading-[1.2]">
+            About Me
+          </h3>
+          <div className="mt-1 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-3" />
+        </div>
+        <p className="mt-4 hyphens-auto text-pretty text-xs leading-[1.45] text-(--muted) md:text-base md:leading-[1.6]">
+          <strong>A software engineer</strong> turning complex ideas into simple, useful,
+          innovative products.
         </p>
       </div>
 
-      <div className="relative flex flex-1 items-center justify-center overflow-hidden px-2 pb-3 md:pb-0">
+      <div className="relative flex flex-1 items-center justify-center overflow-hidden px-2 py-0 pb-3 md:pb-0">
         <div className="relative flex h-full w-full items-center justify-center" style={{ perspective: "1000px" }}>
           <motion.button
             type="button"
@@ -434,6 +439,7 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
                   {mindsetSlides[activeIndex].label}
                 </span>
               </div>
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-tr from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             </motion.div>
           </AnimatePresence>
 
@@ -459,7 +465,7 @@ function MindsetCard({ isInView }: { isInView: boolean }) {
       </div>
 
       <div className="z-20 hidden shrink-0 border-t border-(--card-border)/30 p-3 pt-0 md:block md:p-3.5">
-        <p className="text-lg leading-[1.75] text-(--muted)">
+        <p className="text-pretty text-base leading-[1.6] text-(--muted)">
           Often exploring flight, long drives, and new scalable ways to build with AI.
         </p>
       </div>
@@ -496,7 +502,7 @@ export function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="mx-auto max-w-5xl px-4 pb-32 pt-0"
+      className="mx-auto max-w-6xl px-3 pb-28 pt-0 md:px-4 md:pb-36"
       style={{ scrollMarginTop: "120px" }}
     >
       <motion.div
@@ -511,7 +517,7 @@ export function About() {
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[9rem_20.1875rem_9rem]">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[9rem_auto_9rem]">
         <NameCard isInView={isInView} />
         <NameCard isInView={isInView} desktop />
         <PortraitTile isInView={isInView} />
