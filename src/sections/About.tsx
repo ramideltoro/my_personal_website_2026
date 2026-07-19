@@ -3,19 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, type Variants } from "framer-motion";
 import Image from "next/image";
-import {
-  SiDocker,
-  SiFlutter,
-  SiGit,
-  SiKubernetes,
-  SiNodedotjs,
-  SiPython,
-  SiReact,
-  SiTailwindcss,
-  SiTypescript,
-} from "react-icons/si";
-import { FaAws, FaJava } from "react-icons/fa";
-import type { IconType } from "react-icons";
 
 type CenterImageKey = "main" | "agh" | "work" | "location" | "gym";
 
@@ -29,12 +16,7 @@ type InfoCard = {
 type MindsetSlide = {
   label: string;
   src: string;
-};
-
-type StackItem = {
-  label: string;
-  icon: IconType;
-  color: string;
+  objectPosition?: string;
 };
 
 const centerImages: Record<CenterImageKey, string> = {
@@ -69,25 +51,11 @@ const infoCards: InfoCard[] = [
 
 const mindsetSlides: MindsetSlide[] = [
   { label: "Painting", src: "/about/painting.jpg" },
-  { label: "AI Agents", src: "/about/ai-agents.png" },
+  { label: "AI Agents", src: "/about/ai-agents.png", objectPosition: "left center" },
   { label: "Driving", src: "/about/driving.jpg" },
   { label: "Pilot", src: "/about/pilot.jpg" },
   { label: "Travel", src: "/about/travel.jpg" },
   { label: "Flying", src: "/about/flying.jpg" },
-];
-
-const stackItems: StackItem[] = [
-  { label: "React", icon: SiReact, color: "#61DAFB" },
-  { label: "TS", icon: SiTypescript, color: "#3178C6" },
-  { label: "Java", icon: FaJava, color: "#F89820" },
-  { label: "AWS", icon: FaAws, color: "#FF9900" },
-  { label: "Kubernetes", icon: SiKubernetes, color: "#326CE5" },
-  { label: "Flutter", icon: SiFlutter, color: "#02569B" },
-  { label: "Python", icon: SiPython, color: "#3776AB" },
-  { label: "Node", icon: SiNodedotjs, color: "#339933" },
-  { label: "Tailwind", icon: SiTailwindcss, color: "#06B6D4" },
-  { label: "Docker", icon: SiDocker, color: "#2496ED" },
-  { label: "Git", icon: SiGit, color: "#F05032" },
 ];
 
 const cardVariants: Variants = {
@@ -306,33 +274,6 @@ function InfoStrip({
   );
 }
 
-function StackMarquee() {
-  const items = [...stackItems, ...stackItems];
-
-  return (
-    <div className="relative overflow-hidden border-y border-(--card-border)/50 bg-black/10 py-2 md:py-3">
-      <motion.div
-        className="flex w-max items-center gap-6 whitespace-nowrap px-4 md:gap-8"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ repeat: Infinity, ease: "linear", duration: 22 }}
-      >
-        {items.map((item, index) => {
-          const Icon = item.icon;
-
-          return (
-            <div key={`${item.label}-${index}`} className="flex items-center gap-2">
-              <Icon size={14} style={{ color: item.color }} />
-              <span className="text-[10px] font-medium uppercase tracking-widest text-(--muted)">
-                {item.label}
-              </span>
-            </div>
-          );
-        })}
-      </motion.div>
-    </div>
-  );
-}
-
 function CraftCard({
   isInView,
   onImageChange,
@@ -365,11 +306,7 @@ function CraftCard({
         </p>
       </div>
 
-      <div className="mt-auto shrink-0">
-        <StackMarquee />
-      </div>
-
-      <div className="shrink-0 space-y-2 p-3 md:space-y-5 md:p-4">
+      <div className="mt-auto shrink-0 space-y-2 p-3 md:space-y-5 md:p-4">
         <p className="text-xs leading-[1.45] text-(--muted) md:hidden">
           I find and deliver practical tech solutions.
         </p>
@@ -487,14 +424,12 @@ function MindsetCard({
     >
       <div className="z-20 shrink-0 p-3 pb-2 md:p-3.5 md:pb-0">
         <h3 className="text-2xl font-bold leading-[1.2] tracking-tight text-(--foreground) md:text-4xl">
-          Mindset
+          About Me
         </h3>
         <div className="mt-3 h-0.5 w-16 rounded-full bg-purple-500/80 md:mt-1" />
         <p className="mt-6 text-base leading-[1.75] text-(--muted) md:mt-2 md:text-lg">
-          <strong className="font-bold text-(--foreground)/70">Building more than software.</strong>{" "}
-          My passions provide the{" "}
-          <strong className="font-bold text-(--foreground)/70">discipline and focus</strong> I need
-          to grow.
+          I’m a builder who loves motion, from flying planes and driving roads to exploring AI
+          agents.
         </p>
       </div>
 
@@ -514,6 +449,7 @@ function MindsetCard({
               alt={mindsetSlides[getIndex(-1)].label}
               fill
               className="object-cover"
+              style={{ objectPosition: mindsetSlides[getIndex(-1)].objectPosition }}
               sizes="(max-width: 768px) 25vw, 18vw"
             />
           </motion.button>
@@ -532,6 +468,7 @@ function MindsetCard({
                 alt={mindsetSlides[activeIndex].label}
                 fill
                 className="object-cover"
+                style={{ objectPosition: mindsetSlides[activeIndex].objectPosition }}
                 sizes="(max-width: 768px) 40vw, 25vw"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 via-black/30 to-transparent p-1 pt-6 md:p-3 md:pt-8">
@@ -556,6 +493,7 @@ function MindsetCard({
               alt={mindsetSlides[getIndex(1)].label}
               fill
               className="object-cover"
+              style={{ objectPosition: mindsetSlides[getIndex(1)].objectPosition }}
               sizes="(max-width: 768px) 25vw, 18vw"
             />
           </motion.button>
@@ -564,7 +502,7 @@ function MindsetCard({
 
       <div className="z-20 hidden shrink-0 border-t border-(--card-border)/30 p-3 pt-0 md:block md:p-3.5">
         <p className="text-lg leading-[1.75] text-(--muted)">
-          <strong>Mastering body and mind</strong> is my path to <strong>excellence</strong>.
+          I bring that same curiosity, precision, and momentum into the software I create.
         </p>
       </div>
     </motion.div>
