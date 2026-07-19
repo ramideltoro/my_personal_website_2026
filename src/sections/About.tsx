@@ -499,6 +499,18 @@ export function About() {
       className="mx-auto max-w-5xl px-4 pb-32 pt-0"
       style={{ scrollMarginTop: "120px" }}
     >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-14 text-center"
+      >
+        <h2 className="px-2 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl">
+          <span className="text-gradient-shimmer">About</span>
+        </h2>
+      </motion.div>
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[9rem_20.1875rem_9rem]">
         <NameCard isInView={isInView} />
         <NameCard isInView={isInView} desktop />
