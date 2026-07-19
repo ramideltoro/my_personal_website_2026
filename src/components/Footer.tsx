@@ -6,25 +6,25 @@ export function Footer() {
   return (
     <footer
       id="footer"
-      className="border-t px-4 py-10 backdrop-blur-sm sm:px-0 sm:py-12"
+      className="fixed inset-x-0 bottom-0 z-50 border-t px-3 py-2 backdrop-blur-md sm:px-0"
       style={{
         borderColor: "var(--card-border)",
-        backgroundColor: "color-mix(in oklab, var(--background) 90%, transparent)",
+        backgroundColor: "color-mix(in oklab, var(--background) 50%, transparent)",
       }}
     >
       <div className="section">
-        <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
-          <div className="flex items-center gap-3 text-base text-(--muted)">
-            <span className="text-lg font-bold text-(--foreground)">
+        <div className="flex min-h-9 items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2 text-xs text-(--muted) sm:text-sm">
+            <span className="shrink-0 text-sm font-bold text-(--foreground) sm:text-base">
               <span className="gradient-text">RD</span>
             </span>
-            <span>•</span>
-            <span>
+            <span className="shrink-0">•</span>
+            <span className="truncate">
               © {year} {siteConfig.name}
             </span>
           </div>
 
-          <div className="flex items-center gap-5">
+          <div className="flex shrink-0 items-center gap-3 sm:gap-4">
             {socials.map((social) => (
               <a
                 key={social.name}
@@ -34,7 +34,7 @@ export function Footer() {
                 className="text-(--muted) transition-colors duration-200 hover:scale-110 hover:text-(--accent)"
                 aria-label={social.name}
               >
-                <social.icon size={22} />
+                <social.icon size={18} />
               </a>
             ))}
           </div>

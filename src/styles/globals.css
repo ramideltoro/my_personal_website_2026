@@ -92,7 +92,7 @@ a {
 
 .portfolio-sections {
   --portfolio-section-gap: 6rem;
-  padding-bottom: var(--portfolio-section-gap);
+  padding-bottom: calc(var(--portfolio-section-gap) + 3.5rem);
 }
 
 .portfolio-sections > section + section {
