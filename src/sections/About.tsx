@@ -48,8 +48,8 @@ const centerImages: Record<CenterImageKey, string> = {
 const infoCards: InfoCard[] = [
   {
     title: "Force for Good",
-    short: "Technical Architect helping nonprofits build practical systems.",
-    long: "I serve as a Technical Architect for nonprofit organizations, helping mission-driven teams make smart technical decisions, design reliable systems, and turn limited resources into durable software.",
+    short: "Served as a Technical Architect helping nonprofits build practical systems.",
+    long: "I served as a Technical Architect for nonprofit organizations, helping mission-driven teams make smart technical decisions, design reliable systems, and turn limited resources into durable software.",
     image: "work",
   },
   {
@@ -402,14 +402,21 @@ function LocationCard({
       onMouseLeave={() => onImageChange(null)}
       className="relative col-span-1 row-span-1 aspect-square overflow-hidden rounded-2xl border border-(--card-border) bg-(--card) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-2 md:row-start-3 md:aspect-auto md:h-full"
     >
-      <Image
-        src="/about/map.jpg"
-        alt="Map Background"
-        fill
-        className="scale-125 object-cover opacity-50 grayscale mix-blend-luminosity"
-        sizes="(max-width: 768px) 50vw, 33vw"
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/about/map.jpg"
+          alt="Map Background"
+          fill
+          className="scale-125 translate-y-4 object-cover opacity-50 grayscale mix-blend-luminosity"
+          sizes="(max-width: 768px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-(--card) via-(--card)/70 to-transparent" />
+      </div>
+      <motion.div
+        className="absolute bottom-0 top-0 z-10 w-px bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.6)]"
+        animate={{ left: ["-5%", "105%"] }}
+        transition={{ duration: 4, ease: "linear", repeat: Infinity, repeatDelay: 1 }}
       />
-      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 z-20 flex flex-col justify-end p-3 md:p-4">
         <h3 className="mb-1 text-[22px] font-black uppercase leading-[0.95] tracking-tight text-white sm:text-[26px] md:text-3xl">
           Tampa,
@@ -425,7 +432,6 @@ function LocationCard({
           GMT-4
         </p>
       </div>
-      <div className="absolute bottom-0 right-[32%] top-0 w-px bg-purple-500/90" />
     </motion.div>
   );
 }
