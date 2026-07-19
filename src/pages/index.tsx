@@ -13,6 +13,7 @@ export default function HomePage() {
     <>
       <Head>
         <title>Welcome | Rami Del Toro Personal Website</title>
+        <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
           content="Simple portfolio template based on the original project."
