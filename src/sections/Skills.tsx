@@ -515,21 +515,12 @@ export function Skills() {
           transition={{ duration: 0.6 }}
           className="relative z-10 text-center"
         >
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="px-2 text-xs font-bold uppercase tracking-widest text-(--accent) sm:text-base"
-          >
-            Tech Stack
-          </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="mt-2 px-2 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl"
+            transition={{ delay: 0.1 }}
+            className="px-2 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl"
           >
             My <span className="text-gradient-shimmer">Skills</span>
           </motion.h2>
