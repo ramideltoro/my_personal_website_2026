@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, type Variants } from "framer-motion";
 import Image from "next/image";
 
-type CenterImageKey = "main" | "agh" | "work" | "location" | "gym";
+type CenterImageKey = "main" | "agh" | "work" | "location";
 
 type InfoCard = {
   title: string;
@@ -24,7 +24,6 @@ const centerImages: Record<CenterImageKey, string> = {
   agh: "/about/agh.jpg",
   work: "/about/team.jpg",
   location: "/about/city.jpg",
-  gym: "/about/hobby.jpg",
 };
 
 const infoCards: InfoCard[] = [
@@ -418,7 +417,7 @@ function MindsetCard({
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      onMouseEnter={() => onImageChange("gym")}
+      onMouseEnter={() => onImageChange("main")}
       onMouseLeave={() => onImageChange(null)}
       className="group relative col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-1 md:row-start-2 md:h-full"
     >
@@ -509,28 +508,6 @@ function MindsetCard({
   );
 }
 
-function MobileHobbyTile({
-  isInView,
-  onImageChange,
-}: {
-  isInView: boolean;
-  onImageChange: (image: CenterImageKey | null) => void;
-}) {
-  return (
-    <motion.div
-      custom={6}
-      variants={cardVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      onMouseEnter={() => onImageChange("gym")}
-      onMouseLeave={() => onImageChange(null)}
-      className="relative col-span-1 row-span-1 aspect-square w-full overflow-hidden rounded-2xl border border-(--card-border) md:hidden"
-    >
-      <Image src="/about/hobby.jpg" alt="Gym Lifestyle" fill className="object-cover" sizes="50vw" />
-    </motion.div>
-  );
-}
-
 function CenterPortrait({
   activeImage,
   isInView,
@@ -593,7 +570,6 @@ export function About() {
         <CraftCard isInView={isInView} onImageChange={setCenterImage} />
         <LocationCard isInView={isInView} onImageChange={setCenterImage} />
         <MindsetCard isInView={isInView} onImageChange={setCenterImage} />
-        <MobileHobbyTile isInView={isInView} onImageChange={setCenterImage} />
         <CenterPortrait activeImage={activeImage} isInView={isInView} />
       </div>
     </section>
