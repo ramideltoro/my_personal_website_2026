@@ -4,13 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, type Variants } from "framer-motion";
 import Image from "next/image";
 
-type CenterImageKey = "main" | "agh" | "work" | "location";
-
 type InfoCard = {
   title: string;
   short: string;
   long: string;
-  image: CenterImageKey;
 };
 
 type MindsetSlide = {
@@ -19,32 +16,22 @@ type MindsetSlide = {
   objectPosition?: string;
 };
 
-const centerImages: Record<CenterImageKey, string> = {
-  main: "/about/rami-profile.jpeg",
-  agh: "/about/agh.jpg",
-  work: "/about/team.jpg",
-  location: "/about/city.jpg",
-};
-
 const infoCards: InfoCard[] = [
   {
     title: "Force for Good",
     short: "Served as a Technical Architect helping nonprofits build practical systems.",
     long: "I served as a Technical Architect for nonprofit organizations, helping mission-driven teams make smart technical decisions, design reliable systems, and turn limited resources into durable software.",
-    image: "work",
   },
   {
     title: "Inventor",
     short:
       "I like building ideas end to end. A design around efficient health checking became patented.",
     long: "I like building ideas from rough concept to working system. One design around efficient health checking became patented, which reinforced how much I enjoy practical invention at the architecture level.",
-    image: "main",
   },
   {
     title: "Hackathons",
     short: "I take every opportunity to join hackathons and pressure-test ideas.",
     long: "I take every opportunity to participate in hackathons. In 2021, I won first place for creating a customized ecosystem around Bitbucket, Jira, and Confluence.",
-    image: "work",
   },
 ];
 
@@ -170,13 +157,7 @@ function PortraitTile({ isInView }: { isInView: boolean }) {
   );
 }
 
-function InfoStrip({
-  isInView,
-  onImageChange,
-}: {
-  isInView: boolean;
-  onImageChange: (image: CenterImageKey | null) => void;
-}) {
+function InfoStrip({ isInView }: { isInView: boolean }) {
   const [forceForGood, inventor, hackathons] = infoCards;
 
   return (
@@ -185,10 +166,6 @@ function InfoStrip({
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      onMouseEnter={() => onImageChange("agh")}
-      onMouseLeave={() => {
-        onImageChange(null);
-      }}
       className="group relative col-span-2 row-span-1 h-32 w-full overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-md [--y-mid:70px] [--y-side:60px] md:col-start-2 md:col-span-2 md:row-start-1 md:h-full md:[--y-mid:100px] md:[--y-side:100px]"
     >
       <div className="pointer-events-none absolute left-0 right-0 top-4 z-30 hidden justify-center transition-opacity delay-100 duration-300 group-hover:opacity-0 md:flex">
@@ -273,21 +250,13 @@ function InfoStrip({
   );
 }
 
-function CraftCard({
-  isInView,
-  onImageChange,
-}: {
-  isInView: boolean;
-  onImageChange: (image: CenterImageKey | null) => void;
-}) {
+function CraftCard({ isInView }: { isInView: boolean }) {
   return (
     <motion.div
       custom={4}
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      onMouseEnter={() => onImageChange("work")}
-      onMouseLeave={() => onImageChange(null)}
       className="group col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-3 md:row-start-2 md:h-full"
     >
       <div className="shrink-0 p-3 pb-0 md:p-4 md:pb-0">
@@ -327,21 +296,13 @@ function CraftCard({
   );
 }
 
-function LocationCard({
-  isInView,
-  onImageChange,
-}: {
-  isInView: boolean;
-  onImageChange: (image: CenterImageKey | null) => void;
-}) {
+function LocationCard({ isInView }: { isInView: boolean }) {
   return (
     <motion.div
       custom={3}
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      onMouseEnter={() => onImageChange("location")}
-      onMouseLeave={() => onImageChange(null)}
       className="relative col-span-1 row-span-1 aspect-square overflow-hidden rounded-2xl border border-(--card-border) bg-(--card) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-2 md:row-start-3 md:aspect-auto md:h-full"
     >
       <div className="absolute inset-0 z-0">
@@ -378,13 +339,7 @@ function LocationCard({
   );
 }
 
-function MindsetCard({
-  isInView,
-  onImageChange,
-}: {
-  isInView: boolean;
-  onImageChange: (image: CenterImageKey | null) => void;
-}) {
+function MindsetCard({ isInView }: { isInView: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
   const count = mindsetSlides.length;
@@ -423,8 +378,6 @@ function MindsetCard({
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      onMouseEnter={() => onImageChange("main")}
-      onMouseLeave={() => onImageChange(null)}
       className="group relative col-span-1 row-span-2 flex h-[330px] min-h-0 w-full flex-col overflow-hidden rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/10 md:col-start-1 md:row-start-2 md:h-full"
     >
       <div className="z-20 shrink-0 p-3 pb-2 md:p-3.5 md:pb-0">
@@ -514,13 +467,7 @@ function MindsetCard({
   );
 }
 
-function CenterPortrait({
-  activeImage,
-  isInView,
-}: {
-  activeImage: CenterImageKey;
-  isInView: boolean;
-}) {
+function CenterPortrait({ isInView }: { isInView: boolean }) {
   return (
     <motion.div
       custom={6}
@@ -529,25 +476,14 @@ function CenterPortrait({
       animate={isInView ? "visible" : "hidden"}
       className="relative col-start-2 row-start-2 hidden aspect-square h-full w-full overflow-hidden rounded-2xl border border-(--card-border) bg-black md:block"
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeImage}
-          initial={{ opacity: 0, scale: 1.03 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.28, ease: "easeOut" }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={centerImages[activeImage]}
-            alt="Dynamic Center"
-            fill
-            className="object-cover"
-            sizes="(min-width: 768px) 33vw"
-            priority
-          />
-        </motion.div>
-      </AnimatePresence>
+      <Image
+        src="/about/rami-profile.jpeg"
+        alt="Rami portrait"
+        fill
+        className="object-cover"
+        sizes="(min-width: 768px) 33vw"
+        priority
+      />
     </motion.div>
   );
 }
@@ -555,11 +491,6 @@ function CenterPortrait({
 export function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
-  const [activeImage, setActiveImage] = useState<CenterImageKey>("main");
-
-  const setCenterImage = (image: CenterImageKey | null) => {
-    setActiveImage(image ?? "main");
-  };
 
   return (
     <section
@@ -572,11 +503,11 @@ export function About() {
         <NameCard isInView={isInView} />
         <NameCard isInView={isInView} desktop />
         <PortraitTile isInView={isInView} />
-        <InfoStrip isInView={isInView} onImageChange={setCenterImage} />
-        <CraftCard isInView={isInView} onImageChange={setCenterImage} />
-        <LocationCard isInView={isInView} onImageChange={setCenterImage} />
-        <MindsetCard isInView={isInView} onImageChange={setCenterImage} />
-        <CenterPortrait activeImage={activeImage} isInView={isInView} />
+        <InfoStrip isInView={isInView} />
+        <CraftCard isInView={isInView} />
+        <LocationCard isInView={isInView} />
+        <MindsetCard isInView={isInView} />
+        <CenterPortrait isInView={isInView} />
       </div>
     </section>
   );

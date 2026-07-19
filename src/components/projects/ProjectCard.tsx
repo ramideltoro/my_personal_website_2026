@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
@@ -30,17 +30,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </h3>
 
           <div className="flex items-center gap-2 opacity-100 transition-opacity duration-300 xl:opacity-0 xl:group-hover:opacity-100">
-            {project.github ? (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-linear-to-r from-purple-600 via-violet-600 to-fuchsia-600 px-2.5 py-1.5 text-[10px] font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 md:text-xs"
-              >
-                <Github size={12} />
-                Star
-              </a>
-            ) : null}
             {project.demo ? (
               <a
                 href={project.demo}
