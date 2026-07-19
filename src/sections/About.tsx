@@ -68,12 +68,12 @@ const infoCards: InfoCard[] = [
 ];
 
 const mindsetSlides: MindsetSlide[] = [
-  { label: "Calisthenics", src: "/about/calisthenics.jpg" },
-  { label: "Kickboxing", src: "/about/kickboxing.jpg" },
-  { label: "Snowboarding", src: "/about/snowboarding.jpg" },
-  { label: "Cooking", src: "/about/cooking.jpg" },
-  { label: "Wakeboarding", src: "/about/wakeboarding.jpg" },
-  { label: "Running", src: "/about/run.jpg" },
+  { label: "Painting", src: "/about/painting.jpg" },
+  { label: "AI Agents", src: "/about/ai-agents.png" },
+  { label: "Driving", src: "/about/driving.jpg" },
+  { label: "Pilot", src: "/about/pilot.jpg" },
+  { label: "Travel", src: "/about/travel.jpg" },
+  { label: "Flying", src: "/about/flying.jpg" },
 ];
 
 const stackItems: StackItem[] = [
