@@ -15,8 +15,8 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="flex h-14 w-14 items-center justify-center rounded-full glass-strong">
-        <Moon size={20} className="text-(--muted)" />
+      <div className="flex h-12 w-12 items-center justify-center rounded-full glass-strong sm:h-14 sm:w-14">
+        <Moon className="h-[18px] w-[18px] text-(--muted) sm:h-5 sm:w-5" />
       </div>
     );
   }
@@ -40,7 +40,7 @@ function HydratedThemeToggle() {
     <button
       type="button"
       onClick={onToggle}
-      className="relative flex h-14 w-14 cursor-pointer items-center justify-center rounded-full glass-strong transition-transform duration-300 hover:scale-105 active:scale-95"
+      className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full glass-strong transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--accent)] active:scale-95 sm:h-14 sm:w-14"
       aria-label="Toggle theme"
     >
       <motion.div
@@ -49,7 +49,7 @@ function HydratedThemeToggle() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute"
       >
-        <Moon size={20} className="text-white" />
+        <Moon className="h-[18px] w-[18px] text-white sm:h-5 sm:w-5" />
       </motion.div>
       <motion.div
         initial={false}
@@ -57,7 +57,7 @@ function HydratedThemeToggle() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute"
       >
-        <Sun size={20} className="text-amber-500" />
+        <Sun className="h-[18px] w-[18px] text-amber-500 sm:h-5 sm:w-5" />
       </motion.div>
     </button>
   );

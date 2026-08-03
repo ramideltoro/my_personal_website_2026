@@ -2,7 +2,7 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { Send } from "lucide-react";
+import { MessageCircle, Send } from "lucide-react";
 
 type ChatMessage = {
   id: string;
@@ -162,6 +162,7 @@ function ChatWindow({
   isLoading: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const isEmpty = messages.length === 0 && !isLoading;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -172,8 +173,8 @@ function ChatWindow({
   return (
     <div
       ref={containerRef}
-      className="scrollbar-hide flex h-72 flex-col gap-1 overflow-y-auto sm:h-[17.5rem]"
-      style={{ padding: "12px 8px" }}
+      className={`scrollbar-hide flex flex-col gap-1 overflow-y-auto ${isEmpty ? "h-auto" : "h-56 sm:h-[17.5rem]"}`}
+      style={{ padding: "12px" }}
     >
       <AnimatePresence mode="popLayout">
         {messages.map((message) => (
@@ -182,11 +183,22 @@ function ChatWindow({
         {isLoading ? <TypingIndicator key="typing" text="Thinking..." /> : null}
       </AnimatePresence>
 
-      {messages.length === 0 && !isLoading ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-1 items-center justify-center">
-          <p className="text-center text-xs" style={{ color: "var(--muted)", opacity: 0.5 }}>
-            Ask me anything about Rami...
-          </p>
+      {isEmpty ? (
+        <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="flex items-start gap-2.5">
+          <div
+            className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border"
+            style={{ backgroundColor: "var(--card)", borderColor: "var(--card-border)", color: "var(--accent)" }}
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+          </div>
+          <div
+            className="max-w-[85%] rounded-2xl rounded-bl-md border px-3.5 py-2.5"
+            style={{ backgroundColor: "var(--card)", borderColor: "var(--card-border)" }}
+          >
+            <p className="text-sm leading-relaxed" style={{ color: "var(--foreground)" }}>
+              Ask about what I build, the tools I use, or how to get in touch.
+            </p>
+          </div>
         </motion.div>
       ) : null}
     </div>
@@ -227,32 +239,37 @@ function ChatInput({
 
   return (
     <div className="flex flex-col">
-      <div className="mb-3 flex flex-wrap justify-center gap-1.5">
-        {suggestedPrompts.map((prompt) => (
-          <button
-            key={prompt.label}
-            type="button"
-            onClick={() => {
-              setInput(prompt.autofill);
-              onSuggestedClick(prompt.autofill);
-              textareaRef.current?.focus();
-            }}
-            disabled={isLoading}
-            className="rounded-full border px-3 py-1 text-xs transition-transform hover:border-[var(--accent)] hover:text-[var(--foreground)] active:scale-95 disabled:opacity-50"
-            style={{
-              backgroundColor: "var(--card)",
-              borderColor: "var(--card-border)",
-              color: "var(--muted)",
-            }}
-          >
-            {prompt.label}
-          </button>
-        ))}
+      <div className="mb-3">
+        <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--muted)" }}>
+          Try a question
+        </p>
+        <div className="scrollbar-hide -mx-1 flex flex-nowrap justify-start gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0">
+          {suggestedPrompts.map((prompt) => (
+            <button
+              key={prompt.label}
+              type="button"
+              onClick={() => {
+                setInput(prompt.autofill);
+                onSuggestedClick(prompt.autofill);
+                textareaRef.current?.focus();
+              }}
+              disabled={isLoading}
+              className="min-h-9 shrink-0 rounded-full border px-3.5 py-2 text-xs font-medium transition-transform hover:border-[var(--accent)] hover:text-[var(--foreground)] active:scale-95 disabled:opacity-50"
+              style={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--card-border)",
+                color: "var(--muted)",
+              }}
+            >
+              {prompt.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <form onSubmit={onSubmit} className="relative">
         <div
-          className="flex items-center gap-2 rounded-full border px-4 py-1.5"
+          className="flex min-h-13 items-end gap-2 rounded-2xl border px-3 py-2 sm:rounded-full sm:px-4 sm:py-1.5"
           style={{
             backgroundColor: "var(--card)",
             borderColor: "var(--card-border)",
@@ -272,16 +289,16 @@ function ChatInput({
               textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
             }}
             rows={1}
-            placeholder="Ask anything about Rami..."
-            aria-label="Ask anything about Rami"
+            placeholder="Type a question..."
+            aria-label="Type a question about Rami"
             disabled={isLoading}
-            className="flex-1 resize-none overflow-hidden bg-transparent py-2 text-sm leading-tight outline-none placeholder:opacity-50"
+            className="min-h-9 flex-1 resize-none overflow-hidden bg-transparent py-2 text-base leading-5 outline-none placeholder:opacity-60 sm:text-sm"
             style={{ color: "var(--foreground)", caretColor: "var(--accent)" }}
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white transition-transform hover:scale-105 hover:opacity-90 disabled:scale-90 disabled:opacity-0"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition-transform hover:scale-105 hover:opacity-90 disabled:cursor-default disabled:opacity-35"
             style={{ backgroundColor: "var(--accent)" }}
             aria-label="Send message"
           >
@@ -343,8 +360,8 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center justify-center px-4"
-      style={{ scrollMarginTop: "120px", paddingTop: "6rem", paddingBottom: "3rem" }}
+      className="relative flex items-start justify-center px-4 pb-8 pt-28 sm:min-h-screen sm:items-center sm:pb-12 sm:pt-24"
+      style={{ scrollMarginTop: "120px" }}
     >
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-violet-950/20 via-transparent to-transparent" />
 
@@ -375,11 +392,28 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
-          className="overflow-hidden rounded-3xl border border-white/10 bg-white/2 shadow-2xl shadow-black/20 backdrop-blur-xl"
+          className="overflow-hidden rounded-[1.75rem] border shadow-2xl shadow-black/20 backdrop-blur-xl"
+          style={{ backgroundColor: "color-mix(in srgb, var(--card) 72%, transparent)", borderColor: "var(--card-border)" }}
         >
+          <div className="flex items-center gap-3 border-b px-4 py-3.5 sm:px-5" style={{ borderColor: "var(--card-border)" }}>
+            <div
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border"
+              style={{ backgroundColor: "var(--card)", borderColor: "var(--card-border)", color: "var(--accent)" }}
+            >
+              <MessageCircle className="h-[18px] w-[18px]" aria-hidden="true" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold" style={{ color: "var(--foreground)" }}>
+                Ask anything about Rami
+              </p>
+              <p className="truncate text-xs" style={{ color: "var(--muted)" }}>
+                Explore my work, skills, and story
+              </p>
+            </div>
+          </div>
           <ChatWindow messages={messages} isLoading={busy} />
-          <div className="h-px" style={{ backgroundColor: "var(--border-color)" }} />
-          <div style={{ padding: "16px" }}>
+          <div className="h-px" style={{ backgroundColor: "var(--card-border)" }} />
+          <div className="p-3.5 sm:p-4">
             <ChatInput
               input={input}
               setInput={setInput}
@@ -390,7 +424,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="mt-6 flex justify-center">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="mt-6 hidden justify-center sm:flex">
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity }}

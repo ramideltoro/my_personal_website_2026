@@ -40,7 +40,7 @@ export function Navbar() {
           <ThemeToggle />
         </div>
 
-        <div className="mx-auto flex h-12 max-w-[calc(100vw-6.5rem)] items-center gap-0.5 overflow-x-auto rounded-full glass-strong px-2 shadow-xl shadow-black/10 sm:h-14 sm:max-w-fit sm:gap-1 sm:px-6">
+        <div className="ml-14 mr-0 flex h-12 items-center justify-between gap-0 overflow-x-auto rounded-full glass-strong px-1.5 shadow-xl shadow-black/10 sm:mx-auto sm:h-14 sm:w-fit sm:justify-start sm:gap-1 sm:px-6">
           {navItems.map((item) => {
             const id = item.href.replace("#", "");
             const isActive = active === id;
@@ -48,7 +48,7 @@ export function Navbar() {
               <a
                 key={item.href}
                 href={item.href}
-                className="relative rounded-full px-2.5 py-2 text-xs font-semibold sm:px-5 sm:py-2.5 sm:text-sm"
+                className="relative rounded-full px-2 py-2 text-xs font-semibold sm:px-5 sm:py-2.5 sm:text-sm"
                 style={{ color: isActive ? "var(--foreground)" : "var(--muted)" }}
               >
                 {isActive ? (
